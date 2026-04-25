@@ -5,7 +5,7 @@ KrishiGyaan is a farming assistant prototype with a public frontend, protected d
 ## Project Structure
 
 ```text
-frontend/
+public/
   index.html        Public landing, registration, and login
   dashboard.html    Protected farmer dashboard
   styles.css        UI design system and responsive styling
@@ -24,7 +24,7 @@ api/
   _utils.js         Shared API helpers
 
 package.json        Run and check scripts
-vercel.json         Vercel routing from root URLs to frontend files
+vercel.json         Vercel settings
 ```
 
 ## How To Run
@@ -74,8 +74,8 @@ GROQ_MODEL=llama-3.1-8b-instant
 
 Vercel routing:
 
-- `/` and `/index.html` serve `frontend/index.html`
-- `/dashboard.html` serves `frontend/dashboard.html`
+- `/` and `/index.html` serve `public/index.html`
+- `/dashboard.html` serves `public/dashboard.html`
 - `/api/ai`, `/api/crop-health`, `/api/plant-health`, and `/api/sms/send` run as serverless functions
 
 ## Frontend Responsibilities
