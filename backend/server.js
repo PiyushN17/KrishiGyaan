@@ -1,6 +1,8 @@
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
+const connectDB = require("./config/db");
+const Farmer = require("./models/Farmer");
 
 function loadEnvFile() {
   const envPath = path.join(__dirname, "..", ".env");
@@ -18,10 +20,11 @@ function loadEnvFile() {
     if (key && process.env[key] === undefined) process.env[key] = value;
   }
 }
-
+console.log("MONGO_URI:", process.env.MONGO_URI);
 loadEnvFile();
+connectDB();
 
-const PORT = Number(process.env.PORT || 5173);
+const PORT = Number(process.env.PORT || 5000);
 const FRONTEND_DIR = path.join(__dirname, "..", "public");
 
 const CONFIG = {
@@ -47,7 +50,7 @@ function sendJson(res, status, data) {
   res.writeHead(status, {
     "Content-Type": "application/json; charset=utf-8",
     "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Authorization"
   });
   res.end(JSON.stringify(data));
@@ -182,6 +185,34 @@ async function handleApi(req, res, pathname) {
       });
     }
 
+    if (pathname === "/api/farmers/register") {
+  const mobile = body?.personal?.mobileNumber;
+
+  if (!mobile) {
+    return sendJson(res, 400, { error: "Mobile number required" });
+  }
+
+  const existing = await Farmer.findOne({
+    "personal.mobileNumber": mobile
+  });
+
+  if (existing) {
+    return sendJson(res, 400, { error: "Farmer already exists" });
+  }
+
+  const farmer = new Farmer(body);
+  await farmer.save();
+
+  return sendJson(res, 201, {
+    message: "Farmer saved successfully 🌾",
+    data: farmer
+  });
+}
+
+    if (pathname === "/api/farmers") {
+      const farmers = await Farmer.find();
+      return sendJson(res, 200, farmers);
+    }
     return sendJson(res, 404, { error: "API route not found" });
   } catch (error) {
     return sendJson(res, error.status || 500, { error: error.message, details: error.data });
@@ -217,13 +248,13 @@ const server = http.createServer((req, res) => {
     if (req.method === "OPTIONS") {
       res.writeHead(204, {
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type, Authorization"
       });
       res.end();
       return;
     }
-    if (req.method !== "POST") return sendJson(res, 405, { error: "Method not allowed" });
+    if (!["POST", "GET"].includes(req.method)) return sendJson(res, 405, { error: "Method not allowed" });
     handleApi(req, res, pathname);
     return;
   }

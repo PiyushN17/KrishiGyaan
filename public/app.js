@@ -13,6 +13,69 @@ const siteHeader = document.getElementById("siteHeader");
 const navToggle = document.getElementById("navToggle");
 const navLinks = document.getElementById("navLinks");
 
+  registerForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+    const formData = new FormData(registerForm);
+  const data = {
+    personal: {
+      fullName: formData.get("fullName"),
+      mobileNumber: formData.get("mobile"),
+      age: formData.get("age"),
+      gender: formData.get("gender"),
+      state: formData.get("state"),
+      district: formData.get("district"),
+      village: formData.get("village"),
+      language: formData.get("language")
+    },
+    farm: {
+      landSize: formData.get("landSize"),
+      ownership: formData.get("ownership"),
+      soilType: formData.get("soilType"),
+      irrigation: formData.get("irrigation"),
+      latitude: formData.get("latitude"),
+      longitude: formData.get("longitude")
+    },
+    crop: {
+      primaryCrop: formData.get("primaryCrop"),
+      season: formData.get("season"),
+      sowingDate: formData.get("sowingDate"),
+      fertilizer: formData.get("fertilizer"),
+      problem: formData.get("problem"),
+      harvest: formData.get("harvest")
+    },
+    access: {
+      aadhaar: formData.get("aadhaar"),
+      bank: formData.get("bank"),
+      pmkisan: formData.get("pmkisan"),
+      internet: formData.get("internet")
+    }
+  };
+
+  try {
+    const res = await fetch("http://127.0.0.1:5000/api/farmers/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+
+    const result = await res.json();
+
+    if (res.ok) {
+      saveRegistration(registerForm); // localStorage save
+      formNote.innerText = result.message;
+      registerForm.reset();
+    } else {
+      formNote.innerText = result.error;
+    }
+
+  } catch (err) {
+    console.error(err);
+    formNote.innerText = "Server error. Try again.";
+  }
+});
+
 function updateRegisterStep(nextIndex) {
   if (!formSteps.length) return;
   currentStep = Math.max(0, Math.min(nextIndex, formSteps.length - 1));
@@ -120,11 +183,6 @@ nextStep?.addEventListener("click", (event) => {
 });
 prevStep?.addEventListener("click", () => updateRegisterStep(currentStep - 1));
 stepButtons.forEach((button) => button.addEventListener("click", () => updateRegisterStep(Number(button.dataset.stepJump))));
-
-registerForm?.addEventListener("submit", (event) => {
-  event.preventDefault();
-  saveRegistration(registerForm);
-});
 
 loginForm?.addEventListener("submit", (event) => {
   event.preventDefault();
