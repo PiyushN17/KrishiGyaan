@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | KrishiGyaan</title>
+    <meta name="description" content="Login to your KrishiGyaan farmer dashboard." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans:wght@400;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;600;700;800;900&family=Noto+Sans+Gujarati:wght@400;600;700;800;900&family=Noto+Sans+Kannada:wght@400;600;700;800;900&family=Noto+Sans+Tamil:wght@400;600;700;800;900&family=Noto+Sans+Telugu:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="login">
+    <div class="page-shell">
+      <header class="site-header" id="siteHeader">
+        <nav class="navbar">
+          <a class="brand speakable" href="index.html#home"><span class="brand-mark"><i data-lucide="sprout"></i></span><span>KrishiGyaan</span></a>
+          <button class="nav-toggle" id="navToggle" aria-label="Open menu"><i data-lucide="menu"></i></button>
+          <div class="nav-links" id="navLinks">
+            <a href="index.html#home" data-i18n="navHome">Home</a>
+            <a href="index.html#features" data-i18n="navFeatures">Features</a>
+            <a href="index.html#solutions" data-i18n="navSolutions">Solutions</a>
+            <a href="index.html#about" data-i18n="navAbout">About</a>
+            <a href="index.html#contact" data-i18n="navContact">Contact</a>
+            <a href="login.html" data-i18n="navLogin">Login</a>
+            <a href="register.html" class="btn btn-small btn-primary" data-i18n="navStarted">Get Started</a>
+          </div>
+        </nav>
+      </header>
+
+      <main>
+        <section class="login-section section auth-section" id="login">
+          <div class="login-card speakable">
+            <div>
+              <span class="eyebrow"><i data-lucide="lock-keyhole"></i><span data-i18n="loginEyebrow">Secure farmer access</span></span>
+              <h2 data-i18n="loginTitle">Login to unlock every KrishiGyaan feature.</h2>
+              <p data-i18n="loginCopy">Crop health scans, weather advisory, schemes, AI chat, soil reports, and voice support are available inside the dashboard after registration and login.</p>
+              <div class="access-badges"><span><i data-lucide="scan-search"></i><b data-i18n="accessCrop">Crop scanner</b></span><span><i data-lucide="cloud-sun"></i><b data-i18n="accessWeather">Weather advisory</b></span><span><i data-lucide="landmark"></i><b data-i18n="accessSchemes">Scheme support</b></span></div>
+            </div>
+            <form class="login-form" id="loginForm">
+              <h3 data-i18n="loginFormTitle">Farmer login</h3>
+              <label><span data-i18n="fieldMobile">Mobile Number</span><input required name="mobile" type="tel" inputmode="numeric" maxlength="10" pattern="[6-9][0-9]{9}" placeholder="9876543210" title="Enter the registered 10 digit mobile number." /></label>
+              <label>Password<input required name="password" type="password" minlength="8" maxlength="32" autocomplete="current-password" placeholder="Enter password" /></label>
+              <label><span data-i18n="fieldLanguage">Preferred Language</span><select required name="loginLanguage" id="loginLanguage"></select></label>
+              <button class="btn btn-primary" type="submit"><i data-lucide="log-in"></i><span data-i18n="loginButton">Login to Dashboard</span></button>
+              <button class="btn btn-ghost" type="button" id="forgotPasswordBtn"><i data-lucide="key-round"></i>Forgot password?</button>
+              <p class="form-note">New farmer? <a href="register.html">Register here</a></p>
+              <p class="form-note" id="loginNote" role="status"></p>
+            </form>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer footer-pro speakable">
+        <div class="footer-main"><a class="brand" href="index.html#home"><span class="brand-mark"><i data-lucide="sprout"></i></span><span>KrishiGyaan</span></a><p data-i18n="footerCopy">AI-driven rural empowerment for smarter, more resilient agriculture. Built for farmers, advisors, rural teams, and institutions working to modernize Indian agriculture.</p></div>
+        <div class="footer-links"><a href="index.html#about" data-i18n="footerAbout">About</a><a href="index.html#features" data-i18n="footerFeatures">Features</a><a href="register.html" data-i18n="footerRegister">Register</a><a href="login.html" data-i18n="footerLogin">Login</a><a href="#" data-i18n="footerPrivacy">Privacy</a><a href="#" data-i18n="footerTerms">Terms</a></div>
+        <div class="footer-contact"><strong data-i18n="footerContact">Contact</strong><span>hello@krishigyaan.ai</span><span>Farmer helpline: 1800-000-AGRI</span><span data-i18n="footerLocation">India-first multilingual agriculture intelligence</span></div>
+        <div class="social-links"><a href="#" aria-label="Social updates"><i data-lucide="send"></i></a><a href="#" aria-label="Community"><i data-lucide="network"></i></a><a href="#" aria-label="Messages"><i data-lucide="messages-square"></i></a></div>
+      </footer>
+
+      <div class="voice-panel">
+        <select id="voiceLanguage" aria-label="Voice language"></select>
+        <button class="speaker-button" id="speakerButton" aria-label="Read translated page aloud"><i data-lucide="volume-2"></i></button>
+      </div>
+    </div>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script src="shared.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

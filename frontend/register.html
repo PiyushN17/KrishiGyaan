@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register | KrishiGyaan</title>
+    <meta name="description" content="Create your KrishiGyaan farmer profile for crop, scheme, weather, soil, and AI advisory support." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans:wght@400;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;600;700;800;900&family=Noto+Sans+Gujarati:wght@400;600;700;800;900&family=Noto+Sans+Kannada:wght@400;600;700;800;900&family=Noto+Sans+Tamil:wght@400;600;700;800;900&family=Noto+Sans+Telugu:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="register">
+    <div class="page-shell">
+      <header class="site-header" id="siteHeader">
+        <nav class="navbar">
+          <a class="brand speakable" href="index.html#home"><span class="brand-mark"><i data-lucide="sprout"></i></span><span>KrishiGyaan</span></a>
+          <button class="nav-toggle" id="navToggle" aria-label="Open menu"><i data-lucide="menu"></i></button>
+          <div class="nav-links" id="navLinks">
+            <a href="index.html#home" data-i18n="navHome">Home</a>
+            <a href="index.html#features" data-i18n="navFeatures">Features</a>
+            <a href="index.html#solutions" data-i18n="navSolutions">Solutions</a>
+            <a href="index.html#about" data-i18n="navAbout">About</a>
+            <a href="index.html#contact" data-i18n="navContact">Contact</a>
+            <a href="login.html" data-i18n="navLogin">Login</a>
+            <a href="register.html" class="btn btn-small btn-primary" data-i18n="navStarted">Get Started</a>
+          </div>
+        </nav>
+      </header>
+
+      <main>
+        <section class="register section auth-section" id="register">
+          <div class="section-heading speakable"><span class="eyebrow"><i data-lucide="clipboard-list"></i><span data-i18n="registerEyebrow">Advanced farmer profile</span></span><h2 data-i18n="registerTitle">Register once. Get guidance for your land, crops, and schemes.</h2></div>
+          <div class="register-shell">
+            <aside class="register-steps"><button class="active" data-step-jump="0"><span>1</span><b data-i18n="regStepPersonal">Personal</b></button><button data-step-jump="1"><span>2</span><b data-i18n="regStepFarm">Farm</b></button><button data-step-jump="2"><span>3</span><b data-i18n="regStepCrop">Crop</b></button><button data-step-jump="3"><span>4</span><b data-i18n="regStepAccess">Access</b></button></aside>
+            <form class="register-form speakable" id="registerForm">
+              <div class="form-step active">
+                <h3 data-i18n="personalTitle">Personal details</h3>
+                <div class="form-grid">
+                  <label><span data-i18n="fieldName">Full Name</span><input required name="fullName" minlength="3" maxlength="60" pattern="[A-Za-z .'-]{3,60}" placeholder="Enter farmer name" title="Enter a valid farmer name, at least 3 letters." /></label>
+                  <label><span data-i18n="fieldMobile">Mobile Number</span><input required name="mobile" type="tel" inputmode="numeric" maxlength="10" pattern="[6-9][0-9]{9}" placeholder="9876543210" title="Enter a valid 10 digit Indian mobile number." /></label>
+                  <label><span data-i18n="fieldAge">Age</span><input required name="age" type="number" min="18" max="100" placeholder="42" title="Age must be between 18 and 100." /></label>
+                  <label><span data-i18n="fieldGender">Gender</span><select required name="gender"><option value="">Select gender</option><option>Male</option><option>Female</option><option>Other</option></select></label>
+                  <label><span data-i18n="fieldState">State</span><input required name="state" id="stateInput" minlength="2" maxlength="40" pattern="[A-Za-z .'-]{2,40}" placeholder="Bihar" title="Enter a valid state name." /></label>
+                  <label><span data-i18n="fieldDistrict">District</span><input required name="district" minlength="2" maxlength="40" pattern="[A-Za-z .'-]{2,40}" placeholder="Patna" title="Enter a valid district name." /></label>
+                  <label><span data-i18n="fieldVillage">Village</span><input required name="village" minlength="2" maxlength="50" pattern="[A-Za-z0-9 .'-]{2,50}" placeholder="Village name" title="Enter a valid village name." /></label>
+                  <label><span data-i18n="fieldLanguage">Preferred Language</span><select required name="language" id="languageSelect"></select></label>
+                </div>
+              </div>
+              <div class="form-step"><h3 data-i18n="farmTitle">Farm and land details</h3><div class="form-grid"><label><span data-i18n="fieldLand">Land Size</span><input required name="landSize" inputmode="decimal" pattern="[0-9]{1,4}(\.[0-9]{1,2})?(\s*(acre|acres))?" placeholder="3.5 acres" title="Enter land in acres, up to 4 digits and 2 decimals, e.g. 3.5 acres." /></label><label><span data-i18n="fieldOwnership">Land Ownership</span><select required name="ownership"><option value="">Select ownership</option><option>Owned</option><option>Leased</option><option>Shared</option></select></label><label><span data-i18n="fieldSoil">Soil Type</span><select required name="soilType"><option value="">Select soil type</option><option>Alluvial</option><option>Black</option><option>Red</option><option>Laterite</option><option>Sandy</option></select></label><label><span data-i18n="fieldIrrigation">Irrigation Source</span><select required name="irrigation"><option value="">Select irrigation</option><option>Canal</option><option>Borewell</option><option>Rainfed</option><option>Drip</option><option>River</option></select></label></div></div>
+              <div class="form-step"><h3 data-i18n="cropTitle">Crop and season details</h3><div class="form-grid"><label><span data-i18n="fieldCrop">Primary Crop</span><input required name="primaryCrop" minlength="2" maxlength="40" pattern="[A-Za-z ,'-]{2,40}" placeholder="Rice, wheat, potato" title="Enter a valid crop name." /></label><label><span data-i18n="fieldSeason">Season</span><select required name="season"><option value="">Select season</option><option>Kharif</option><option>Rabi</option><option>Zaid</option></select></label><label><span data-i18n="fieldSowing">Sowing Date</span><input required name="sowingDate" type="date" /></label><label><span data-i18n="fieldFertilizer">Fertilizer Used</span><input required name="fertilizer" minlength="2" maxlength="60" placeholder="Urea, DAP, organic" /></label><label><span data-i18n="fieldProblem">Recent Problem</span><textarea required name="problem" minlength="5" maxlength="220" placeholder="Yellow leaves, pest marks, low growth"></textarea></label><label><span data-i18n="fieldHarvest">Expected Harvest</span><input required name="harvest" minlength="4" maxlength="30" placeholder="November 2026" title="Enter expected harvest month/year or date." /></label></div></div>
+              <div class="form-step"><h3 data-i18n="accessTitle">Benefits and access details</h3><div class="form-grid"><label><span data-i18n="fieldAadhaar">Aadhaar Last 4 Digits</span><input required name="aadhaar" maxlength="4" pattern="[0-9]{4}" placeholder="1234" /></label><label><span data-i18n="fieldBank">Bank Linked</span><select required name="bank"><option value="">Select bank status</option><option>Yes</option><option>No</option></select></label><label><span data-i18n="fieldPm">PM-KISAN Status</span><select required name="pmkisan"><option value="">Select PM-KISAN status</option><option>Registered</option><option>Not Registered</option><option>Not Sure</option></select></label><label><span data-i18n="fieldInternet">Internet Access</span><select required name="internet"><option value="">Select internet access</option><option>Smartphone</option><option>Shared phone</option><option>Low connectivity</option></select></label><label>Password<input required name="password" type="password" minlength="8" maxlength="32" autocomplete="new-password" placeholder="Create password" title="Use 8-32 characters with at least one letter and one number." /></label><label>Confirm Password<input required name="confirmPassword" type="password" minlength="8" maxlength="32" autocomplete="new-password" placeholder="Confirm password" /></label><label class="check-row"><input name="consent" type="checkbox" required /><span data-i18n="fieldConsent">I agree to receive AI advisory and scheme alerts.</span></label></div></div>
+              <div class="form-actions"><button class="btn btn-ghost" type="button" id="prevStep"><i data-lucide="arrow-left"></i><span data-i18n="backButton">Back</span></button><button class="btn btn-primary" type="button" id="nextStep"><span data-i18n="nextButton">Next</span><i data-lucide="arrow-right"></i></button><button class="btn btn-primary hidden" type="submit" id="submitRegister"><i data-lucide="check-circle"></i><span data-i18n="completeButton">Complete Registration</span></button></div>
+              <p class="form-note">Already registered? <a href="login.html">Login here</a></p>
+              <p class="form-note" id="formNote" role="status"></p>
+            </form>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer footer-pro speakable">
+        <div class="footer-main"><a class="brand" href="index.html#home"><span class="brand-mark"><i data-lucide="sprout"></i></span><span>KrishiGyaan</span></a><p data-i18n="footerCopy">AI-driven rural empowerment for smarter, more resilient agriculture. Built for farmers, advisors, rural teams, and institutions working to modernize Indian agriculture.</p></div>
+        <div class="footer-links"><a href="index.html#about" data-i18n="footerAbout">About</a><a href="index.html#features" data-i18n="footerFeatures">Features</a><a href="register.html" data-i18n="footerRegister">Register</a><a href="login.html" data-i18n="footerLogin">Login</a><a href="#" data-i18n="footerPrivacy">Privacy</a><a href="#" data-i18n="footerTerms">Terms</a></div>
+        <div class="footer-contact"><strong data-i18n="footerContact">Contact</strong><span>hello@krishigyaan.ai</span><span>Farmer helpline: 1800-000-AGRI</span><span data-i18n="footerLocation">India-first multilingual agriculture intelligence</span></div>
+        <div class="social-links"><a href="#" aria-label="Social updates"><i data-lucide="send"></i></a><a href="#" aria-label="Community"><i data-lucide="network"></i></a><a href="#" aria-label="Messages"><i data-lucide="messages-square"></i></a></div>
+      </footer>
+
+      <div class="voice-panel">
+        <select id="voiceLanguage" aria-label="Voice language"></select>
+        <button class="speaker-button" id="speakerButton" aria-label="Read translated page aloud"><i data-lucide="volume-2"></i></button>
+      </div>
+    </div>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script src="shared.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

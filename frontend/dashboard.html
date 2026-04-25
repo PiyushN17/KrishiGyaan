@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KrishiGyaan Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans:wght@400;600;700;800;900&family=Noto+Sans+Devanagari:wght@400;600;700;800;900&family=Noto+Sans+Gujarati:wght@400;600;700;800;900&family=Noto+Sans+Kannada:wght@400;600;700;800;900&family=Noto+Sans+Tamil:wght@400;600;700;800;900&family=Noto+Sans+Telugu:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="dashboard">
+    <div class="dashboard-page">
+      <aside class="dashboard-sidebar">
+        <a class="brand speakable" href="index.html"><span class="brand-mark"><i data-lucide="sprout"></i></span><span>KrishiGyaan</span></a>
+        <a class="active" href="#overview" data-section-link="overview"><i data-lucide="layout-dashboard"></i><span data-i18n="dashTitle">Your field intelligence center</span></a>
+        <a href="#crop-advisory" data-section-link="crop-advisory"><i data-lucide="sprout"></i><span data-i18n="featureCropTitle">Smart Crop Advisory</span></a>
+        <a href="#weather" data-section-link="weather"><i data-lucide="cloud-sun"></i><span data-i18n="accessWeather">Weather advisory</span></a>
+        <a href="#crop-health" data-section-link="crop-health"><i data-lucide="scan-line"></i><span data-i18n="featureDiseaseTitle">Crop Disease Detection</span></a>
+        <a href="#soil-health" data-section-link="soil-health"><i data-lucide="layers-3"></i><span data-i18n="soilTitle">Soil Health Analysis</span></a>
+        <a href="#schemes" data-section-link="schemes"><i data-lucide="landmark"></i><span data-i18n="schemesTitle">Sahayata Scheme Support</span></a>
+        <a href="#scheme-assistant" data-section-link="scheme-assistant"><i data-lucide="file-pen-line"></i><span>Scheme Assistant</span></a>
+        <a href="#modern-techniques" data-section-link="modern-techniques"><i data-lucide="tractor"></i><span data-i18n="modernTitle">Modern Farming Technique of the Day</span></a>
+        <a href="#ai-chat" data-section-link="ai-chat"><i data-lucide="message-square"></i><span data-i18n="chatTitle">KrishiBaba</span></a>
+        <button id="logoutBtn"><i data-lucide="log-out"></i><span data-i18n="dashLogout">Logout</span></button>
+      </aside>
+
+      <main class="dashboard-main">
+        <section class="dashboard-hero speakable" id="overview">
+          <div>
+            <span class="eyebrow"><i data-lucide="shield-check"></i><span data-i18n="dashEyebrow">Protected farmer dashboard</span></span>
+            <h1 data-i18n="dashTitle">Your field intelligence center</h1>
+            <p data-i18n="dashSubtitle">All KrishiGyaan services are now in one secure place after login.</p>
+          </div>
+          <div class="dashboard-actions">
+            <select id="voiceLanguage" aria-label="Voice language"></select>
+            <button class="btn btn-primary" id="speakerButton"><i data-lucide="volume-2"></i><span data-i18n="dashRead">Read dashboard</span></button>
+          </div>
+        </section>
+
+        <section class="analytics-grid dashboard-analytics">
+          <div class="analytics-card speakable"><i data-lucide="leaf"></i><span data-i18n="dashCropScore">Crop Score</span><strong id="cropScore">Check</strong></div>
+          <div class="analytics-card speakable"><i data-lucide="droplets"></i><span data-i18n="dashMoisture">Moisture</span><strong id="moistureStatus">Check</strong></div>
+          <div class="analytics-card speakable"><i data-lucide="cloud-sun"></i><span data-i18n="dashWeatherRisk">Weather Risk</span><strong id="weatherRisk">Check</strong></div>
+          <div class="analytics-card speakable"><i data-lucide="badge-indian-rupee"></i><span data-i18n="dashSchemeMatches">Scheme Matches</span><strong id="schemeMatches">0</strong></div>
+        </section>
+
+        <section class="dashboard-panel speakable" id="crop-advisory">
+          <div class="panel-copy">
+            <span class="eyebrow"><i data-lucide="sprout"></i><span data-i18n="dashAdvisoryTitle">Smart Crop Advisory</span></span>
+            <h2 data-i18n="dashWelcome">Welcome back</h2>
+            <p id="profileSummary" data-i18n="dashAdvisoryCopy">Personal recommendations are generated from your crop, land, language, and local weather profile.</p>
+          </div>
+          <div class="advice-stack" id="cropAdvice">
+            <div class="diagnosis-row"><strong>Profile-aware advisory</strong><p>Get weather first to generate sowing, irrigation, and harvest recommendations.</p></div>
+          </div>
+        </section>
+
+        <section class="dashboard-panel weather-panel" id="weather">
+          <div class="panel-copy speakable">
+            <span class="eyebrow"><i data-lucide="cloud-sun"></i><span data-i18n="weatherTitle">10-day weather and sowing guidance</span></span>
+            <h2 data-i18n="weatherTitle">10-day weather and sowing guidance</h2>
+            <p data-i18n="weatherCopy">Uses free Open-Meteo forecast data for rainfall, temperature, wind, and short-term farm decisions.</p>
+            <button class="btn btn-primary" id="weatherBtn"><i data-lucide="cloud-cog"></i><span data-i18n="weatherButton">Get Weather Advisory</span></button>
+          </div>
+          <div class="weather-results">
+            <div class="result-card spacious-result" id="weatherResult"><span class="empty-state">Weather guidance will appear here after checking location.</span></div>
+            <div class="result-card ai-accent-card" id="longTermResult"><h3 data-i18n="longTermTitle">30-day growth outlook</h3><p data-i18n="longTermCopy">Long-term guidance uses seasonal trend data where available and falls back to the 16-day trend for practical planning.</p></div>
+          </div>
+        </section>
+
+        <section class="crop-health-panel dashboard-card" id="crop-health">
+          <div class="speakable">
+            <h3 data-i18n="scanTitle">Crop and Plant Disease Detection</h3>
+            <p data-i18n="scanCopy">Choose crop disease or plant disease mode, upload an image, and get AI diagnosis with KrishiBaba treatment guidance.</p>
+            <div class="mode-toggle" role="group" aria-label="Disease detection mode">
+              <label><input type="radio" name="diseaseMode" value="crop" checked /><span data-i18n="cropDiseaseMode">Crop disease</span></label>
+              <label><input type="radio" name="diseaseMode" value="plant" /><span data-i18n="plantDiseaseMode">Plant disease</span></label>
+            </div>
+            <label class="upload-box"><input type="file" id="cropImageInput" accept="image/*" /><i data-lucide="image-plus"></i><span data-i18n="chooseImage">Choose image</span></label>
+            <button class="btn btn-primary" id="detectBtn"><i data-lucide="scan-search"></i><span data-i18n="analyzeCrop">Analyze Health</span></button>
+          </div>
+          <div class="result-card spacious-result" id="cropResult"><span class="empty-state" data-i18n="scanEmpty">Upload an image to print AI crop health data here.</span></div>
+        </section>
+
+        <section class="feature-grid dashboard-feature-grid">
+          <article class="feature-card speakable" id="voice-support"><i data-lucide="volume-2"></i><h3 data-i18n="voiceTitle">Voice + Local Language Support</h3><p data-i18n="voiceCopy">Click any card, section, or button and KrishiGyaan will dictate that content in your selected local language.</p></article>
+        </section>
+
+        <section class="dashboard-panel scheme-panel" id="schemes">
+          <div class="panel-copy speakable">
+            <span class="eyebrow"><i data-lucide="landmark"></i><span data-i18n="schemesTitle">Sahayata Scheme Support</span></span>
+            <h2 data-i18n="schemesTitle">Sahayata Scheme Support</h2>
+            <p data-i18n="schemesCopy">Discover subsidies, PM-KISAN status, irrigation support, crop insurance, and welfare benefits.</p>
+          </div>
+          <div class="scheme-matcher" id="schemeMatcher"></div>
+        </section>
+
+        <section class="dashboard-panel compact-panel" id="scheme-assistant">
+          <div class="panel-copy speakable">
+            <span class="eyebrow"><i data-lucide="file-pen-line"></i><span>Scheme Assistant</span></span>
+            <h2>Scheme doubts and application drafts</h2>
+            <p>Ask KrishiBaba about scheme eligibility, documents, process, or generate an application letter, form, affidavit, or checklist in your selected draft language.</p>
+          </div>
+          <div class="scheme-tools">
+            <form class="chat-box" id="schemeChatForm">
+              <div class="chat-input-wrap">
+                <textarea id="schemeQuestion" placeholder="Ask a scheme-related doubt..."></textarea>
+                <button class="mic-button" id="schemeSpeechBtn" type="button" aria-label="Speak your scheme doubt"><i data-lucide="mic"></i></button>
+              </div>
+              <div class="chat-actions">
+                <button class="btn btn-primary" type="submit"><i data-lucide="bot"></i>Ask KrishiBaba</button>
+                <span class="speech-status" id="schemeSpeechStatus"></span>
+              </div>
+            </form>
+            <div class="form-grid">
+              <label>Scheme<select id="schemeDraftSelect"></select></label>
+              <label>Draft Type<select id="schemeDraftType"><option>Application letter</option><option>Simple application form</option><option>Affidavit format</option><option>Document checklist</option><option>Grievance letter</option><option>Follow-up letter</option></select></label>
+              <label>Draft Language<select id="schemeDraftLanguage"></select></label>
+            </div>
+            <div class="attention-fields">
+              <label>Phone Number<input id="draftPhone" type="tel" /></label>
+              <label>Age<input id="draftAge" type="number" min="18" /></label>
+            </div>
+            <button class="btn btn-ghost" id="schemeDraftBtn" type="button"><i data-lucide="file-text"></i>Generate Draft</button>
+            <button class="btn btn-primary hidden" id="printDraftBtn" type="button"><i data-lucide="printer"></i>Print Application</button>
+            <div class="result-card spacious-result ai-response-card" id="schemeAssistantResult"><span class="empty-state">Scheme guidance and drafts will appear here.</span></div>
+          </div>
+        </section>
+
+        <section class="dashboard-panel compact-panel" id="soil-health">
+          <div class="panel-copy speakable">
+            <span class="eyebrow"><i data-lucide="layers-3"></i><span data-i18n="soilTitle">Soil Health Check</span></span>
+            <h2 data-i18n="soilTitle">Soil Health Check</h2>
+            <p data-i18n="soilCopy">Check soil health from farm profile, soil photo, color, texture, drainage, irrigation source, and weather risk. Then get smart crop advice and a growth path.</p>
+            <label class="upload-box"><input type="file" id="soilImageInput" accept="image/*" /><i data-lucide="image-plus"></i><span>Choose soil photo</span></label>
+            <button class="btn btn-primary" id="soilBtn"><i data-lucide="microscope"></i><span data-i18n="soilButton">Analyze Soil Health</span></button>
+          </div>
+          <div class="result-card spacious-result" id="soilResult"><span class="empty-state" data-i18n="soilEmpty">Upload a soil photo or use your registered soil profile to generate soil health guidance.</span></div>
+        </section>
+
+        <section class="dashboard-panel compact-panel" id="modern-techniques">
+          <div class="panel-copy speakable">
+            <span class="eyebrow"><i data-lucide="tractor"></i><span data-i18n="modernTitle">Learn Modern Farming Techniques</span></span>
+            <h2 data-i18n="modernTitle">Learn Modern Farming Techniques</h2>
+            <p data-i18n="modernCopy">KrishiGyaan compares traditional farming practices from your region with modern low-investment techniques that can increase output and profitability.</p>
+            <button class="btn btn-primary" id="modernBtn"><i data-lucide="sparkles"></i><span data-i18n="modernButton">Generate Modern Technique Plan</span></button>
+          </div>
+          <div class="result-card" id="modernResult"><span class="empty-state" data-i18n="modernEmpty">Generate a region-specific comparison of traditional and modern farming methods.</span></div>
+        </section>
+
+        <section class="dashboard-panel" id="ai-chat">
+          <div class="panel-copy speakable"><span class="eyebrow"><i data-lucide="bot"></i><span data-i18n="chatTitle">KrishiBaba</span></span><h2 data-i18n="chatTitle">KrishiBaba</h2><p data-i18n="chatCopy">Ask KrishiBaba about crop selection, pest control, fertilizer, irrigation, schemes, weather, or market readiness.</p></div>
+          <form class="chat-box" id="chatForm">
+            <div class="chat-input-wrap">
+              <textarea id="chatQuestion" data-i18n-placeholder="chatPlaceholder" placeholder="Ask your farming question..."></textarea>
+              <button class="mic-button" id="speechToTextBtn" type="button" aria-label="Speak your question"><i data-lucide="mic"></i></button>
+            </div>
+            <div class="chat-actions">
+              <button class="btn btn-primary" type="submit"><i data-lucide="send"></i><span data-i18n="chatButton">Ask KrishiGyaan</span></button>
+              <span class="speech-status" id="speechStatus"></span>
+            </div>
+            <div class="result-card" id="chatAnswer"><span class="empty-state">KrishiBaba's advisory answer will appear here.</span></div>
+          </form>
+        </section>
+
+        <footer class="footer footer-pro dashboard-footer speakable">
+          <div class="footer-main"><a class="brand" href="index.html"><span class="brand-mark"><i data-lucide="sprout"></i></span><span>KrishiGyaan</span></a><p data-i18n="footerCopy">AI-driven rural empowerment for smarter, more resilient agriculture. Built for farmers, advisors, rural teams, and institutions working to modernize Indian agriculture.</p></div>
+          <div class="footer-links"><a href="index.html#about" data-i18n="footerAbout">About</a><a href="index.html#features" data-i18n="footerFeatures">Features</a><a href="#schemes">Schemes</a><a href="#ai-chat" data-i18n="chatTitle">KrishiBaba</a><a href="#" data-i18n="footerPrivacy">Privacy</a><a href="#" data-i18n="footerTerms">Terms</a></div>
+          <div class="footer-contact"><strong data-i18n="footerContact">Contact</strong><span>hello@krishigyaan.ai</span><span>Farmer helpline: 1800-000-AGRI</span><span data-i18n="footerLocation">India-first multilingual agriculture intelligence</span></div>
+          <div class="social-links"><a href="#" aria-label="Social updates"><i data-lucide="send"></i></a><a href="#" aria-label="Community"><i data-lucide="network"></i></a><a href="#" aria-label="Messages"><i data-lucide="messages-square"></i></a></div>
+        </footer>
+      </main>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script src="shared.js"></script>
+    <script src="dashboard.js"></script>
+  </body>
+</html>
