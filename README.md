@@ -14,9 +14,17 @@ frontend/
   dashboard.js      Dashboard feature behavior
 
 backend/
-  server.js         Static server and API proxy layer
+  server.js         Local static server and API proxy layer
+
+api/
+  ai.js             Vercel serverless Gemini/Groq proxy
+  crop-health.js    Vercel serverless crop disease proxy
+  plant-health.js   Vercel serverless Plant.id proxy
+  sms/send.js       Vercel serverless SMS placeholder
+  _utils.js         Shared API helpers
 
 package.json        Run and check scripts
+vercel.json         Vercel routing from root URLs to frontend files
 ```
 
 ## How To Run
@@ -41,6 +49,34 @@ The backend serves the frontend and proxies sensitive API calls:
 - `/api/sms/send` is reserved for a real SMS gateway.
 
 For production, move API keys into environment variables instead of hardcoding fallback values.
+
+## Deploy On Vercel
+
+Use this repository root as the Vercel project root. No build command is needed because the frontend is plain HTML, CSS, and JavaScript.
+
+Add these environment variables in Vercel Project Settings:
+
+```text
+GEMINI_API_KEY
+GEMINI_MODELS
+GROQ_API_KEY
+GROQ_MODEL
+CROP_KINDWISE_API_KEY
+PLANT_ID_API_KEY
+```
+
+Recommended values:
+
+```text
+GEMINI_MODELS=gemini-2.5-flash,gemini-2.0-flash
+GROQ_MODEL=llama-3.1-8b-instant
+```
+
+Vercel routing:
+
+- `/` and `/index.html` serve `frontend/index.html`
+- `/dashboard.html` serves `frontend/dashboard.html`
+- `/api/ai`, `/api/crop-health`, `/api/plant-health`, and `/api/sms/send` run as serverless functions
 
 ## Frontend Responsibilities
 
