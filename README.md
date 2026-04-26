@@ -220,10 +220,10 @@ KrishiGyaan is designed to help farmers:
 
 **Team KrishiYoddha**
 
+- Preeti Gorwade
 - Piyush Nath
 - Abhay
 - Bhagyalakshmi Siddavatam
-- Preeti Gorwade
 
 ## Status
 
