@@ -134,6 +134,11 @@ const KG_TRANSLATIONS = {
 let kgActiveLanguage = localStorage.getItem("krishigyaanLanguage") || "en-IN";
 let kgAudioMuted = localStorage.getItem("krishigyaanAudioMuted") === "true";
 const kgBaseTexts = new Map();
+const kgOriginalTextNodes = new WeakMap();
+const kgOriginalAttrs = new WeakMap();
+let kgOriginalTitle = document.title;
+let kgLocalizationObserver;
+let kgLocalizationQueued = false;
 const kgTranslationCache = JSON.parse(localStorage.getItem("krishigyaanTranslationCache") || "{}");
 const kgAiCache = JSON.parse(localStorage.getItem("krishigyaanAiCache") || "{}");
 
@@ -212,6 +217,79 @@ function kgPopulateLanguageSelects() {
   });
 }
 
+function kgPredefinedPhrases(lang = kgActiveLanguage) {
+  return window.KG_PREDEFINED_LOCALES?.phrases?.[lang] || {};
+}
+
+function kgTranslatePhrase(text, lang = kgActiveLanguage) {
+  const clean = String(text || "").replace(/\s+/g, " ").trim();
+  if (!clean || lang === "en-IN") return text;
+  return kgPredefinedPhrases(lang)[clean] || text;
+}
+
+function kgWithOriginalSpacing(current, translated) {
+  const prefix = String(current).match(/^\s*/)?.[0] || "";
+  const suffix = String(current).match(/\s*$/)?.[0] || "";
+  return `${prefix}${translated}${suffix}`;
+}
+
+function kgApplyPredefinedLocale(root = document.body) {
+  const lang = kgActiveLanguage;
+  const ignored = new Set(["SCRIPT", "STYLE", "NOSCRIPT", "SVG"]);
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode(node) {
+      const parent = node.parentElement;
+      const text = node.textContent.replace(/\s+/g, " ").trim();
+      if (!text || !parent || ignored.has(parent.tagName) || parent.closest("[data-i18n], .voice-panel, .audio-mute-button, .go-top-button, pre")) return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+
+  const textNodes = [];
+  while (walker.nextNode()) textNodes.push(walker.currentNode);
+  textNodes.forEach((node) => {
+    if (!kgOriginalTextNodes.has(node)) kgOriginalTextNodes.set(node, node.textContent);
+    const original = kgOriginalTextNodes.get(node);
+    const translated = lang === "en-IN" ? original : kgTranslatePhrase(original, lang);
+    node.textContent = kgWithOriginalSpacing(original, translated);
+  });
+
+  const attrRoot = root.nodeType === Node.ELEMENT_NODE ? root : document;
+  attrRoot.querySelectorAll?.("[placeholder], [title], [aria-label]").forEach((node) => {
+    if (node.hasAttribute("data-i18n-placeholder")) return;
+    let originals = kgOriginalAttrs.get(node);
+    if (!originals) {
+      originals = {};
+      kgOriginalAttrs.set(node, originals);
+    }
+    ["placeholder", "title", "aria-label"].forEach((attr) => {
+      if (!node.hasAttribute(attr)) return;
+      if (!originals[attr]) originals[attr] = node.getAttribute(attr);
+      const original = originals[attr];
+      node.setAttribute(attr, lang === "en-IN" ? original : kgTranslatePhrase(original, lang));
+    });
+  });
+
+  document.title = lang === "en-IN" ? kgOriginalTitle : kgTranslatePhrase(kgOriginalTitle, lang);
+}
+
+function kgQueuePredefinedLocale() {
+  if (kgLocalizationQueued) return;
+  kgLocalizationQueued = true;
+  window.requestAnimationFrame(() => {
+    kgLocalizationQueued = false;
+    kgApplyPredefinedLocale();
+  });
+}
+
+function kgStartLocaleObserver() {
+  if (kgLocalizationObserver) return;
+  kgLocalizationObserver = new MutationObserver((mutations) => {
+    if (mutations.some((mutation) => mutation.addedNodes.length || mutation.type === "childList")) kgQueuePredefinedLocale();
+  });
+  kgLocalizationObserver.observe(document.body, { childList: true, subtree: true });
+}
+
 function kgApplyLanguage(lang) {
   kgActiveLanguage = KG_TRANSLATIONS[lang] ? lang : "en-IN";
   localStorage.setItem("krishigyaanLanguage", kgActiveLanguage);
@@ -219,15 +297,16 @@ function kgApplyLanguage(lang) {
   document.documentElement.lang = kgActiveLanguage.split("-")[0];
   document.querySelectorAll("[data-i18n]").forEach((node) => {
     const key = node.dataset.i18n;
-    node.textContent = dictionary[key] || kgBaseTexts.get(key) || KG_EN[key] || node.textContent;
+    const english = KG_EN[key] || kgBaseTexts.get(key) || node.textContent;
+    node.textContent = kgActiveLanguage === "en-IN" ? english : kgTranslatePhrase(english, kgActiveLanguage) || dictionary[key] || english;
   });
   document.querySelectorAll("[data-i18n-placeholder]").forEach((node) => {
     const key = node.dataset.i18nPlaceholder;
-    node.setAttribute("placeholder", dictionary[key] || KG_EN[key] || node.getAttribute("placeholder") || "");
+    const english = KG_EN[key] || node.getAttribute("placeholder") || "";
+    node.setAttribute("placeholder", kgActiveLanguage === "en-IN" ? english : kgTranslatePhrase(english, kgActiveLanguage) || dictionary[key] || english);
   });
   kgPopulateLanguageSelects();
-  kgTranslateMissingPageText(kgActiveLanguage);
-  kgTranslateLooseUiText(kgActiveLanguage);
+  kgApplyPredefinedLocale();
   window.dispatchEvent(new CustomEvent("kg-language-change", { detail: { language: kgActiveLanguage } }));
 }
 
@@ -357,8 +436,10 @@ function kgSpeak(text, lang = kgActiveLanguage) {
 function kgUpdateMuteButton() {
   const button = document.getElementById("audioMuteButton");
   if (!button) return;
-  button.innerHTML = kgAudioMuted ? '<i data-lucide="volume-x"></i><span>Unmute</span>' : '<i data-lucide="volume-2"></i><span>Mute</span>';
-  button.setAttribute("aria-label", kgAudioMuted ? "Unmute audio" : "Mute audio");
+  const label = kgAudioMuted ? kgTranslatePhrase("Unmute") : kgTranslatePhrase("Mute");
+  const ariaLabel = kgAudioMuted ? kgTranslatePhrase("Unmute audio") : kgTranslatePhrase("Mute audio");
+  button.innerHTML = kgAudioMuted ? `<i data-lucide="volume-x"></i><span>${label}</span>` : `<i data-lucide="volume-2"></i><span>${label}</span>`;
+  button.setAttribute("aria-label", ariaLabel);
   button.classList.toggle("muted", kgAudioMuted);
   kgRefreshIcons();
 }
@@ -388,8 +469,8 @@ function kgEnsureHomeTopButton() {
   button.type = "button";
   button.id = "goTopButton";
   button.className = "go-top-button";
-  button.setAttribute("aria-label", "Go to top");
-  button.innerHTML = '<i data-lucide="arrow-up"></i><span>Top</span>';
+  button.setAttribute("aria-label", kgTranslatePhrase("Go to top"));
+  button.innerHTML = `<i data-lucide="arrow-up"></i><span>${kgTranslatePhrase("Top")}</span>`;
   button.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
   window.addEventListener("scroll", () => button.classList.toggle("visible", window.scrollY > 500), { passive: true });
   document.body.appendChild(button);
@@ -503,6 +584,7 @@ function kgInitShared({ askLocation = true } = {}) {
   kgApplyLanguage(kgActiveLanguage);
   kgEnsureAudioControls();
   kgEnsureHomeTopButton();
+  kgStartLocaleObserver();
   kgRefreshIcons();
   document.querySelectorAll("#voiceLanguage, #languageSelect, #loginLanguage").forEach((select) => {
     select?.addEventListener("change", (event) => kgApplyLanguage(event.target.value));
