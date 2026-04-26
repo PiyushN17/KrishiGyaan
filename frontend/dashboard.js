@@ -898,8 +898,12 @@ async function generateModernTechniquePlan() {
 }
 
 async function analyzeSoilHealth() {
-  soilResult.innerHTML = `<span class="empty-state">Checking soil profile and preparing crop growth path...</span>`;
   const file = soilImageInput?.files?.[0];
+  if (!file) {
+    soilResult.innerHTML = `<span class="empty-state">${uiText("Please choose a soil photo first.")}</span>`;
+    return;
+  }
+  soilResult.innerHTML = `<span class="empty-state">Checking soil profile and preparing crop growth path...</span>`;
   const imageMeta = await readImageMeta(file);
   const localSoil = {
     registeredSoilType: profile.soilType || "not provided",

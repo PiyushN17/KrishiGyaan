@@ -366,7 +366,8 @@ window.KG_PREDEFINED_LOCALES = {
       "Best fit when the farmer is using or interested in organic/natural inputs.": "Best fit when the farmer is using or interested in organic/natural inputs.",
       "Useful for farmers preparing to sell produce or compare markets.": "Useful for farmers preparing to sell produce or compare markets.",
       "Profile has land or soil details. This scheme helps confirm pH, NPK, organic carbon, and micronutrients.": "Profile has land or soil details. This scheme helps confirm pH, NPK, organic carbon, and micronutrients.",
-      "Profile has crop and season/sowing details needed for crop insurance consideration.": "Profile has crop and season/sowing details needed for crop insurance consideration."
+      "Profile has crop and season/sowing details needed for crop insurance consideration.": "Profile has crop and season/sowing details needed for crop insurance consideration.",
+      "Please choose a soil photo first.": "Please choose a soil photo first."
     },
     "hi-IN": {
       "\"I found subsidy information in my language without visiting multiple offices. It made the process clear.\"": "\"मुझे कई कार्यालयों में गए बिना अपनी भाषा में सब्सिडी की जानकारी मिली। इससे प्रक्रिया स्पष्ट हो गई।\"",
@@ -734,7 +735,8 @@ window.KG_PREDEFINED_LOCALES = {
       "Best fit when the farmer is using or interested in organic/natural inputs.": "यह तब सबसे उपयुक्त है जब किसान जैविक/प्राकृतिक आदानों का उपयोग कर रहा हो या उनमें रुचि रखता हो।",
       "Useful for farmers preparing to sell produce or compare markets.": "उपज बेचने या बाज़ारों की तुलना करने की तैयारी कर रहे किसानों के लिए उपयोगी।",
       "Profile has land or soil details. This scheme helps confirm pH, NPK, organic carbon, and micronutrients.": "प्रोफ़ाइल में भूमि या मिट्टी का विवरण है। यह योजना पीएच, एनपीके, कार्बनिक कार्बन और सूक्ष्म पोषक तत्वों की पुष्टि करने में मदद करती है।",
-      "Profile has crop and season/sowing details needed for crop insurance consideration.": "प्रोफ़ाइल में फसल बीमा पर विचार के लिए आवश्यक फसल और मौसम/बुवाई का विवरण है।"
+      "Profile has crop and season/sowing details needed for crop insurance consideration.": "प्रोफ़ाइल में फसल बीमा पर विचार के लिए आवश्यक फसल और मौसम/बुवाई का विवरण है।",
+      "Please choose a soil photo first.": "कृपया पहले एक मिट्टी का फोटो चुनें।"
     },
     "bho-IN": {
       "\"I found subsidy information in my language without visiting multiple offices. It made the process clear.\"": "उ कहले कि, \"हमरा बिना कई गो कार्यालय में गईले अपना भाषा में सब्सिडी के जानकारी मिलल। एकरा से प्रक्रिया साफ हो गईल।\"",
@@ -1102,7 +1104,8 @@ window.KG_PREDEFINED_LOCALES = {
       "Best fit when the farmer is using or interested in organic/natural inputs.": "सबसे बढ़िया फिट तब जब किसान जैविक/प्राकृतिक इनपुट के इस्तेमाल कर रहल होखे भा ओकरा में रुचि राखे.",
       "Useful for farmers preparing to sell produce or compare markets.": "उपज बेचे भा बाजार के तुलना करे के तइयारी करे वाला किसानन खातिर उपयोगी.",
       "Profile has land or soil details. This scheme helps confirm pH, NPK, organic carbon, and micronutrients.": "प्रोफाइल में जमीन भा माटी के विवरण बा। ई योजना पीएच, एनपीके, कार्बनिक कार्बन, आ सूक्ष्म पोषक तत्व सभ के पुष्टि करे में मदद करे ले।",
-      "Profile has crop and season/sowing details needed for crop insurance consideration.": "प्रोफाइल में फसल आ मौसम/बुवाई के विवरण बा जवन फसल बीमा पर विचार खातिर जरूरी बा।"
+      "Profile has crop and season/sowing details needed for crop insurance consideration.": "प्रोफाइल में फसल आ मौसम/बुवाई के विवरण बा जवन फसल बीमा पर विचार खातिर जरूरी बा।",
+      "Please choose a soil photo first.": "कृपया पहिले माटी के फोटो चुनीं।"
     },
     "gu-IN": {
       "\"I found subsidy information in my language without visiting multiple offices. It made the process clear.\"": "\"મને બહુવિધ કાર્યાલયોની મુલાકાત લીધા વિના મારી ભાષામાં સબસિડીની માહિતી મળી. તેનાથી પ્રક્રિયા સ્પષ્ટ થઈ ગઈ.\"",
@@ -1470,7 +1473,8 @@ window.KG_PREDEFINED_LOCALES = {
       "Best fit when the farmer is using or interested in organic/natural inputs.": "જ્યારે ખેડૂત ઓર્ગેનિક/કુદરતી ઇનપુટ્સનો ઉપયોગ કરતો હોય અથવા તેમાં રસ ધરાવતો હોય ત્યારે શ્રેષ્ઠ ફિટ.",
       "Useful for farmers preparing to sell produce or compare markets.": "ઉત્પાદન વેચવા અથવા બજારોની તુલના કરવાની તૈયારી કરતા ખેડૂતો માટે ઉપયોગી.",
       "Profile has land or soil details. This scheme helps confirm pH, NPK, organic carbon, and micronutrients.": "પ્રોફાઇલમાં જમીન અથવા માટીની વિગતો છે. આ યોજના pH, NPK, કાર્બનિક કાર્બન અને સૂક્ષ્મ પોષકતત્ત્વોની પુષ્ટિ કરવામાં મદદ કરે છે.",
-      "Profile has crop and season/sowing details needed for crop insurance consideration.": "પ્રોફાઇલમાં પાક અને મોસમ/વાવણીની વિગતો પાક વીમા વિચારણા માટે જરૂરી છે."
+      "Profile has crop and season/sowing details needed for crop insurance consideration.": "પ્રોફાઇલમાં પાક અને મોસમ/વાવણીની વિગતો પાક વીમા વિચારણા માટે જરૂરી છે.",
+      "Please choose a soil photo first.": "કૃપા કરીને પહેલા માટીનો ફોટો પસંદ કરો."
     },
     "mr-IN": {
       "\"I found subsidy information in my language without visiting multiple offices. It made the process clear.\"": "\"मला अनेक कार्यालयांना भेट न देता माझ्या भाषेत अनुदानाची माहिती मिळाली. त्यामुळे प्रक्रिया स्पष्ट झाली.\"",
@@ -1838,7 +1842,8 @@ window.KG_PREDEFINED_LOCALES = {
       "Best fit when the farmer is using or interested in organic/natural inputs.": "जेव्हा शेतकरी सेंद्रिय/नैसर्गिक निविष्ठांचा वापर करत असेल किंवा त्यात स्वारस्य असेल तेव्हा सर्वात योग्य.",
       "Useful for farmers preparing to sell produce or compare markets.": "शेतमाल विकण्याची किंवा बाजाराची तुलना करण्याची तयारी करणाऱ्या शेतकऱ्यांसाठी उपयुक्त.",
       "Profile has land or soil details. This scheme helps confirm pH, NPK, organic carbon, and micronutrients.": "प्रोफाइलमध्ये जमीन किंवा मातीचे तपशील आहेत. ही योजना pH, NPK, सेंद्रिय कार्बन आणि सूक्ष्म पोषक घटकांची पुष्टी करण्यात मदत करते.",
-      "Profile has crop and season/sowing details needed for crop insurance consideration.": "प्रोफाइलमध्ये पीक विमा विचारासाठी आवश्यक पीक आणि हंगाम/पेरणीचे तपशील आहेत."
+      "Profile has crop and season/sowing details needed for crop insurance consideration.": "प्रोफाइलमध्ये पीक विमा विचारासाठी आवश्यक पीक आणि हंगाम/पेरणीचे तपशील आहेत.",
+      "Please choose a soil photo first.": "कृपया प्रथम मातीचा फोटो निवडा."
     },
     "kn-IN": {
       "\"I found subsidy information in my language without visiting multiple offices. It made the process clear.\"": "\"ನಾನು ಅನೇಕ ಕಚೇರಿಗಳಿಗೆ ಭೇಟಿ ನೀಡದೆಯೇ ನನ್ನ ಭಾಷೆಯಲ್ಲಿ ಸಬ್ಸಿಡಿ ಮಾಹಿತಿಯನ್ನು ಕಂಡುಕೊಂಡಿದ್ದೇನೆ. ಇದು ಪ್ರಕ್ರಿಯೆಯನ್ನು ಸ್ಪಷ್ಟಪಡಿಸಿದೆ.\"",
@@ -2206,7 +2211,8 @@ window.KG_PREDEFINED_LOCALES = {
       "Best fit when the farmer is using or interested in organic/natural inputs.": "ರೈತರು ಸಾವಯವ/ನೈಸರ್ಗಿಕ ಒಳಹರಿವುಗಳನ್ನು ಬಳಸುವಾಗ ಅಥವಾ ಆಸಕ್ತಿ ಹೊಂದಿರುವಾಗ ಅತ್ಯುತ್ತಮವಾಗಿ ಹೊಂದಿಕೊಳ್ಳುತ್ತದೆ.",
       "Useful for farmers preparing to sell produce or compare markets.": "ಉತ್ಪನ್ನಗಳನ್ನು ಮಾರಾಟ ಮಾಡಲು ಅಥವಾ ಮಾರುಕಟ್ಟೆಗಳನ್ನು ಹೋಲಿಸಲು ತಯಾರಿ ನಡೆಸುತ್ತಿರುವ ರೈತರಿಗೆ ಉಪಯುಕ್ತವಾಗಿದೆ.",
       "Profile has land or soil details. This scheme helps confirm pH, NPK, organic carbon, and micronutrients.": "ಪ್ರೊಫೈಲ್ ಭೂಮಿ ಅಥವಾ ಮಣ್ಣಿನ ವಿವರಗಳನ್ನು ಹೊಂದಿದೆ. ಈ ಯೋಜನೆಯು pH, NPK, ಸಾವಯವ ಇಂಗಾಲ ಮತ್ತು ಸೂಕ್ಷ್ಮ ಪೋಷಕಾಂಶಗಳನ್ನು ದೃಢೀಕರಿಸಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ.",
-      "Profile has crop and season/sowing details needed for crop insurance consideration.": "ಬೆಳೆ ವಿಮೆಯ ಪರಿಗಣನೆಗೆ ಅಗತ್ಯವಿರುವ ಬೆಳೆ ಮತ್ತು ಸೀಸನ್/ಬಿತ್ತನೆ ವಿವರಗಳನ್ನು ಪ್ರೊಫೈಲ್ ಹೊಂದಿದೆ."
+      "Profile has crop and season/sowing details needed for crop insurance consideration.": "ಬೆಳೆ ವಿಮೆಯ ಪರಿಗಣನೆಗೆ ಅಗತ್ಯವಿರುವ ಬೆಳೆ ಮತ್ತು ಸೀಸನ್/ಬಿತ್ತನೆ ವಿವರಗಳನ್ನು ಪ್ರೊಫೈಲ್ ಹೊಂದಿದೆ.",
+      "Please choose a soil photo first.": "ದಯವಿಟ್ಟು ಮೊದಲು ಮಣ್ಣಿನ ಫೋಟೋವನ್ನು ಆಯ್ಕೆಮಾಡಿ."
     },
     "ta-IN": {
       "\"I found subsidy information in my language without visiting multiple offices. It made the process clear.\"": "\"பல அலுவலகங்களுக்குச் செல்லாமலேயே எனது மொழியில் மானியத் தகவலைக் கண்டேன். இது செயல்முறையை தெளிவாக்கியது.\"",
@@ -2574,7 +2580,8 @@ window.KG_PREDEFINED_LOCALES = {
       "Best fit when the farmer is using or interested in organic/natural inputs.": "விவசாயி பயன்படுத்தும் போது அல்லது இயற்கை/இயற்கை உள்ளீடுகளில் ஆர்வமாக இருக்கும்போது மிகவும் பொருத்தமானது.",
       "Useful for farmers preparing to sell produce or compare markets.": "விளைபொருட்களை விற்க அல்லது சந்தைகளை ஒப்பிட்டுப் பார்க்கத் தயாராகும் விவசாயிகளுக்குப் பயனுள்ளதாக இருக்கும்.",
       "Profile has land or soil details. This scheme helps confirm pH, NPK, organic carbon, and micronutrients.": "சுயவிவரத்தில் நிலம் அல்லது மண் விவரங்கள் உள்ளன. இந்த திட்டம் pH, NPK, கரிம கார்பன் மற்றும் நுண்ணூட்டச்சத்துக்களை உறுதிப்படுத்த உதவுகிறது.",
-      "Profile has crop and season/sowing details needed for crop insurance consideration.": "சுயவிவரத்தில் பயிர் காப்பீட்டுக் கருத்தில் தேவைப்படும் பயிர் மற்றும் பருவம்/விதைப்பு விவரங்கள் உள்ளன."
+      "Profile has crop and season/sowing details needed for crop insurance consideration.": "சுயவிவரத்தில் பயிர் காப்பீட்டுக் கருத்தில் தேவைப்படும் பயிர் மற்றும் பருவம்/விதைப்பு விவரங்கள் உள்ளன.",
+      "Please choose a soil photo first.": "முதலில் மண் புகைப்படத்தை தேர்வு செய்யவும்."
     },
     "te-IN": {
       "\"I found subsidy information in my language without visiting multiple offices. It made the process clear.\"": "\"నేను బహుళ కార్యాలయాలను సందర్శించకుండానే నా భాషలో సబ్సిడీ సమాచారాన్ని కనుగొన్నాను. ఇది ప్రక్రియను స్పష్టం చేసింది.\"",
@@ -2942,7 +2949,8 @@ window.KG_PREDEFINED_LOCALES = {
       "Best fit when the farmer is using or interested in organic/natural inputs.": "రైతు సేంద్రీయ/సహజ ఇన్‌పుట్‌లను ఉపయోగిస్తున్నప్పుడు లేదా ఆసక్తిగా ఉన్నప్పుడు ఉత్తమంగా సరిపోతుంది.",
       "Useful for farmers preparing to sell produce or compare markets.": "ఉత్పత్తులను విక్రయించడానికి లేదా మార్కెట్‌లను పోల్చడానికి సిద్ధమవుతున్న రైతులకు ఉపయోగకరంగా ఉంటుంది.",
       "Profile has land or soil details. This scheme helps confirm pH, NPK, organic carbon, and micronutrients.": "ప్రొఫైల్‌లో భూమి లేదా నేల వివరాలు ఉన్నాయి. ఈ పథకం pH, NPK, సేంద్రీయ కార్బన్ మరియు సూక్ష్మపోషకాలను నిర్ధారించడంలో సహాయపడుతుంది.",
-      "Profile has crop and season/sowing details needed for crop insurance consideration.": "ప్రొఫైల్‌లో పంట బీమా పరిశీలనకు అవసరమైన పంట మరియు సీజన్/విత్తే వివరాలు ఉన్నాయి."
+      "Profile has crop and season/sowing details needed for crop insurance consideration.": "ప్రొఫైల్‌లో పంట బీమా పరిశీలనకు అవసరమైన పంట మరియు సీజన్/విత్తే వివరాలు ఉన్నాయి.",
+      "Please choose a soil photo first.": "దయచేసి ముందుగా మట్టి ఫోటోను ఎంచుకోండి."
     },
     "pa-IN": {
       "\"I found subsidy information in my language without visiting multiple offices. It made the process clear.\"": "\"ਮੈਨੂੰ ਕਈ ਦਫ਼ਤਰਾਂ ਦਾ ਦੌਰਾ ਕੀਤੇ ਬਿਨਾਂ ਸਬਸਿਡੀ ਦੀ ਜਾਣਕਾਰੀ ਮੇਰੀ ਭਾਸ਼ਾ ਵਿੱਚ ਮਿਲੀ। ਇਸ ਨੇ ਪ੍ਰਕਿਰਿਆ ਨੂੰ ਸਪੱਸ਼ਟ ਕਰ ਦਿੱਤਾ।\"",
@@ -3310,7 +3318,8 @@ window.KG_PREDEFINED_LOCALES = {
       "Best fit when the farmer is using or interested in organic/natural inputs.": "ਜਦੋਂ ਕਿਸਾਨ ਜੈਵਿਕ/ਕੁਦਰਤੀ ਇਨਪੁਟਸ ਦੀ ਵਰਤੋਂ ਕਰ ਰਿਹਾ ਹੋਵੇ ਜਾਂ ਉਸ ਵਿੱਚ ਦਿਲਚਸਪੀ ਰੱਖਦਾ ਹੋਵੇ ਤਾਂ ਸਭ ਤੋਂ ਵਧੀਆ।",
       "Useful for farmers preparing to sell produce or compare markets.": "ਉਤਪਾਦ ਵੇਚਣ ਜਾਂ ਬਾਜ਼ਾਰਾਂ ਦੀ ਤੁਲਨਾ ਕਰਨ ਦੀ ਤਿਆਰੀ ਕਰ ਰਹੇ ਕਿਸਾਨਾਂ ਲਈ ਉਪਯੋਗੀ।",
       "Profile has land or soil details. This scheme helps confirm pH, NPK, organic carbon, and micronutrients.": "ਪ੍ਰੋਫਾਈਲ ਵਿੱਚ ਜ਼ਮੀਨ ਜਾਂ ਮਿੱਟੀ ਦੇ ਵੇਰਵੇ ਹਨ। ਇਹ ਸਕੀਮ pH, NPK, ਜੈਵਿਕ ਕਾਰਬਨ, ਅਤੇ ਸੂਖਮ ਪੌਸ਼ਟਿਕ ਤੱਤਾਂ ਦੀ ਪੁਸ਼ਟੀ ਕਰਨ ਵਿੱਚ ਮਦਦ ਕਰਦੀ ਹੈ।",
-      "Profile has crop and season/sowing details needed for crop insurance consideration.": "ਪ੍ਰੋਫਾਈਲ ਵਿੱਚ ਫਸਲ ਬੀਮੇ ਦੇ ਵਿਚਾਰ ਲਈ ਲੋੜੀਂਦੇ ਫਸਲ ਅਤੇ ਸੀਜ਼ਨ/ਬਿਜਾਈ ਦੇ ਵੇਰਵੇ ਹਨ।"
+      "Profile has crop and season/sowing details needed for crop insurance consideration.": "ਪ੍ਰੋਫਾਈਲ ਵਿੱਚ ਫਸਲ ਬੀਮੇ ਦੇ ਵਿਚਾਰ ਲਈ ਲੋੜੀਂਦੇ ਫਸਲ ਅਤੇ ਸੀਜ਼ਨ/ਬਿਜਾਈ ਦੇ ਵੇਰਵੇ ਹਨ।",
+      "Please choose a soil photo first.": "ਕਿਰਪਾ ਕਰਕੇ ਪਹਿਲਾਂ ਮਿੱਟੀ ਦੀ ਫੋਟੋ ਚੁਣੋ।"
     },
     "har-IN": {
       "\"I found subsidy information in my language without visiting multiple offices. It made the process clear.\"": "\"मुझे कई कार्यालयों में गए बिना अपनी भाषा में सब्सिडी की जानकारी मिली। इससे प्रक्रिया स्पष्ट हो गई।\"",
@@ -3678,7 +3687,8 @@ window.KG_PREDEFINED_LOCALES = {
       "Best fit when the farmer is using or interested in organic/natural inputs.": "यह तब सबसे उपयुक्त है जब किसान जैविक/प्राकृतिक आदानों का उपयोग कर रहा हो या उनमें रुचि रखता हो।",
       "Useful for farmers preparing to sell produce or compare markets.": "उपज बेचने या बाज़ारों की तुलना करने की तैयारी कर रहे किसानों के लिए उपयोगी।",
       "Profile has land or soil details. This scheme helps confirm pH, NPK, organic carbon, and micronutrients.": "प्रोफ़ाइल में भूमि या मिट्टी का विवरण है। यह योजना पीएच, एनपीके, कार्बनिक कार्बन और सूक्ष्म पोषक तत्वों की पुष्टि करने में मदद करती है।",
-      "Profile has crop and season/sowing details needed for crop insurance consideration.": "प्रोफ़ाइल में फसल बीमा पर विचार के लिए आवश्यक फसल और मौसम/बुवाई का विवरण है।"
+      "Profile has crop and season/sowing details needed for crop insurance consideration.": "प्रोफ़ाइल में फसल बीमा पर विचार के लिए आवश्यक फसल और मौसम/बुवाई का विवरण है।",
+      "Please choose a soil photo first.": "कृपया पहले एक मिट्टी का फोटो चुनें।"
     }
   }
 };
