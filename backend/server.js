@@ -20,8 +20,8 @@ function loadEnvFile() {
     if (key && process.env[key] === undefined) process.env[key] = value;
   }
 }
-console.log("MONGO_URI:", process.env.MONGO_URI);
 loadEnvFile();
+console.log("MONGO_URI:", process.env.MONGO_URI);
 connectDB();
 
 const PORT = Number(process.env.PORT || 5000);

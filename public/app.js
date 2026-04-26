@@ -17,39 +17,58 @@ const navLinks = document.getElementById("navLinks");
   e.preventDefault();
     const formData = new FormData(registerForm);
   const data = {
-    personal: {
-      fullName: formData.get("fullName"),
-      mobileNumber: formData.get("mobile"),
-      age: formData.get("age"),
-      gender: formData.get("gender"),
-      state: formData.get("state"),
-      district: formData.get("district"),
-      village: formData.get("village"),
-      language: formData.get("language")
-    },
-    farm: {
-      landSize: formData.get("landSize"),
-      ownership: formData.get("ownership"),
-      soilType: formData.get("soilType"),
-      irrigation: formData.get("irrigation"),
-      latitude: formData.get("latitude"),
-      longitude: formData.get("longitude")
-    },
-    crop: {
-      primaryCrop: formData.get("primaryCrop"),
-      season: formData.get("season"),
-      sowingDate: formData.get("sowingDate"),
-      fertilizer: formData.get("fertilizer"),
-      problem: formData.get("problem"),
-      harvest: formData.get("harvest")
-    },
-    access: {
-      aadhaar: formData.get("aadhaar"),
-      bank: formData.get("bank"),
-      pmkisan: formData.get("pmkisan"),
-      internet: formData.get("internet")
+  personal: {
+    fullName: formData.get("fullName"),
+    mobileNumber: formData.get("mobile"),
+    age: formData.get("age"),
+    gender: formData.get("gender"),
+    state: formData.get("state"),
+    district: formData.get("district"),
+    village: formData.get("village"),
+    preferredLanguage: formData.get("language")
+  },
+
+  farm: {
+    landSize: formData.get("landSize"),
+    landOwnership: formData.get("ownership"),
+    soilType: formData.get("soilType"),
+    irrigationSource: formData.get("irrigation"),
+    location: {
+      latitude: Number(formData.get("latitude")),
+      longitude: Number(formData.get("longitude"))
     }
-  };
+  },
+
+  crop: {
+  primaryCrops: formData.get("primaryCrop")
+    ? [formData.get("primaryCrop")]
+    : [],
+
+  season: formData.get("season"),
+
+  sowingDate: new Date(formData.get("sowingDate")),
+
+  fertilizersUsed: formData.get("fertilizersUsed")
+    ? formData.get("fertilizersUsed")
+        .split(",")
+        .map(f => f.trim())
+        .filter(Boolean)
+    : [],
+
+  recentProblem: formData.get("problem"),
+
+  expectedHarvest: formData.get("harvest")
+    ? new Date(formData.get("harvest"))
+    : null
+},
+
+  access: {
+    aadhaarLast4: formData.get("aadhaar"),
+    bankLinked: formData.get("bank"),
+    pmKisanStatus: formData.get("pmkisan"),
+    internetAccess: formData.get("internet")
+  }
+};
 
   try {
     const res = await fetch("http://127.0.0.1:5000/api/farmers/register", {

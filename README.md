@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # KrishiGyaan
 
 KrishiGyaan is a farming assistant prototype with a public frontend, protected dashboard, AI guidance, crop and plant disease detection, weather advisory, soil guidance, voice support, and SMS-ready daily updates.
@@ -94,3 +95,6 @@ The frontend handles:
 ## Notes
 
 This is a prototype. Real deployment should use proper authentication, a database, backend-secured secrets, and a real SMS provider.
+=======
+# KrishiGyaan
+>>>>>>> 01f8b22fa3c8378bd7f8071bb3e97d896fbe4790
