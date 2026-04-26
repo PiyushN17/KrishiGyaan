@@ -1573,6 +1573,57 @@ textarea.field-invalid {
   height: 25px;
 }
 
+.audio-mute-button,
+.go-top-button {
+  position: fixed;
+  z-index: 45;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 104px;
+  height: 44px;
+  border: 0;
+  border-radius: 999px;
+  color: var(--white);
+  background: linear-gradient(135deg, var(--deep-green), var(--fresh-green));
+  box-shadow: var(--soft-shadow);
+  font: inherit;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.audio-mute-button {
+  right: 24px;
+  bottom: 98px;
+}
+
+.audio-mute-button.muted {
+  background: linear-gradient(135deg, #3f4f46, #80927f);
+}
+
+.go-top-button {
+  left: 24px;
+  bottom: 24px;
+  min-width: 88px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.go-top-button.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.audio-mute-button svg,
+.go-top-button svg {
+  width: 18px;
+  height: 18px;
+}
+
 @keyframes floatShape {
   0%,
   100% {
@@ -1766,6 +1817,17 @@ textarea.field-invalid {
 
   .voice-panel {
     right: 14px;
+    bottom: 14px;
+  }
+
+  .audio-mute-button {
+    right: 14px;
+    bottom: 84px;
+    min-width: 92px;
+  }
+
+  .go-top-button {
+    left: 14px;
     bottom: 14px;
   }
 

@@ -132,6 +132,7 @@ const KG_TRANSLATIONS = {
 };
 
 let kgActiveLanguage = localStorage.getItem("krishigyaanLanguage") || "en-IN";
+let kgAudioMuted = localStorage.getItem("krishigyaanAudioMuted") === "true";
 const kgBaseTexts = new Map();
 const kgTranslationCache = JSON.parse(localStorage.getItem("krishigyaanTranslationCache") || "{}");
 const kgAiCache = JSON.parse(localStorage.getItem("krishigyaanAiCache") || "{}");
@@ -167,14 +168,14 @@ function kgAiLanguageGuard(lang = kgActiveLanguage) {
 
 async function kgAiText(prompt, options = {}) {
   const responseLanguage = options.language || kgActiveLanguage;
-  const guardedPrompt = `${kgAiLanguageGuard(responseLanguage)}\n\n${prompt}`;
+  const guardedPrompt = `${kgAiLanguageGuard(responseLanguage)}\nDo not use markdown. Do not use asterisks or double asterisks anywhere.\n\n${prompt}`;
   const cacheKey = `ai:${responseLanguage}:${kgHashText(guardedPrompt)}`;
   if (kgAiCache[cacheKey]) return kgAiCache[cacheKey];
 
   const response = await fetch(kgApiUrl("/api/ai"), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ prompt: guardedPrompt })
+    body: JSON.stringify({ prompt: guardedPrompt, maxTokens: options.maxTokens })
   });
 
   if (!response.ok) {
@@ -183,12 +184,20 @@ async function kgAiText(prompt, options = {}) {
   }
 
   const data = await response.json();
-  const text = data?.text?.trim() || "";
+  const text = kgCleanAiText(data?.text || "");
   if (text) {
     kgAiCache[cacheKey] = text;
     localStorage.setItem("krishigyaanAiCache", JSON.stringify(kgAiCache));
   }
   return text;
+}
+
+function kgCleanAiText(text = "") {
+  return String(text)
+    .replace(/\*/g, "")
+    .replace(/\u2022/g, "-")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
 }
 
 function kgRefreshIcons() {
@@ -320,7 +329,7 @@ function kgSplitSpeechText(text) {
 }
 
 function kgSpeak(text, lang = kgActiveLanguage) {
-  if (!text || !("speechSynthesis" in window)) return;
+  if (kgAudioMuted || !text || !("speechSynthesis" in window)) return;
   window.speechSynthesis.cancel();
   kgRefreshVoiceList();
   const speechLang = kgSpeechLang(lang);
@@ -343,6 +352,47 @@ function kgSpeak(text, lang = kgActiveLanguage) {
     window.speechSynthesis.speak(utterance);
   };
   speakChunk();
+}
+
+function kgUpdateMuteButton() {
+  const button = document.getElementById("audioMuteButton");
+  if (!button) return;
+  button.innerHTML = kgAudioMuted ? '<i data-lucide="volume-x"></i><span>Unmute</span>' : '<i data-lucide="volume-2"></i><span>Mute</span>';
+  button.setAttribute("aria-label", kgAudioMuted ? "Unmute audio" : "Mute audio");
+  button.classList.toggle("muted", kgAudioMuted);
+  kgRefreshIcons();
+}
+
+function kgToggleAudioMute() {
+  kgAudioMuted = !kgAudioMuted;
+  localStorage.setItem("krishigyaanAudioMuted", String(kgAudioMuted));
+  if (kgAudioMuted && "speechSynthesis" in window) window.speechSynthesis.cancel();
+  kgUpdateMuteButton();
+}
+
+function kgEnsureAudioControls() {
+  if (!document.getElementById("audioMuteButton")) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.id = "audioMuteButton";
+    button.className = "audio-mute-button";
+    button.addEventListener("click", kgToggleAudioMute);
+    document.body.appendChild(button);
+  }
+  kgUpdateMuteButton();
+}
+
+function kgEnsureHomeTopButton() {
+  if (document.body.dataset.page !== "landing" || document.getElementById("goTopButton")) return;
+  const button = document.createElement("button");
+  button.type = "button";
+  button.id = "goTopButton";
+  button.className = "go-top-button";
+  button.setAttribute("aria-label", "Go to top");
+  button.innerHTML = '<i data-lucide="arrow-up"></i><span>Top</span>';
+  button.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+  window.addEventListener("scroll", () => button.classList.toggle("visible", window.scrollY > 500), { passive: true });
+  document.body.appendChild(button);
 }
 
 function kgCollectReadableText(scope = document.body) {
@@ -451,6 +501,8 @@ function kgInitShared({ askLocation = true } = {}) {
   document.querySelectorAll("[data-i18n]").forEach((node) => kgBaseTexts.set(node.dataset.i18n, node.textContent.trim()));
   kgPopulateLanguageSelects();
   kgApplyLanguage(kgActiveLanguage);
+  kgEnsureAudioControls();
+  kgEnsureHomeTopButton();
   kgRefreshIcons();
   document.querySelectorAll("#voiceLanguage, #languageSelect, #loginLanguage").forEach((select) => {
     select?.addEventListener("change", (event) => kgApplyLanguage(event.target.value));

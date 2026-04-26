@@ -391,11 +391,15 @@ function cleanDraftText(text) {
     .trim();
 }
 
+function renderAiText(text = "") {
+  return kgCleanAiText(text).replace(/\n/g, "<br>");
+}
+
 async function askSchemeAssistant(question) {
   schemeAssistantResult.innerHTML = `<span class="empty-state">KrishiBaba is checking scheme guidance...</span>`;
   try {
     const answer = await kgAiText(`You are KrishiBaba, a government scheme assistant for Indian farmers. Explain simply in the selected website language and avoid dates. Farmer profile: ${JSON.stringify(profile)}. Available schemes: ${JSON.stringify(schemes.map(({ title, summary, benefit, reason }) => ({ title, summary, benefit, reason })))}. Farmer question: ${question}`);
-    schemeAssistantResult.innerHTML = `<div class="diagnosis-row"><strong>KrishiBaba scheme guidance</strong><p>${answer.replace(/\n/g, "<br>")}</p></div>`;
+    schemeAssistantResult.innerHTML = `<div class="diagnosis-row"><strong>KrishiBaba scheme guidance</strong><p>${renderAiText(answer)}</p></div>`;
     kgSpeak(answer, kgActiveLanguage);
   } catch (error) {
     schemeAssistantResult.innerHTML = `<div class="diagnosis-row"><strong>Scheme guidance unavailable</strong><p>${error.message}</p></div>`;
@@ -419,16 +423,18 @@ async function generateSchemeDraft() {
     const draft = await kgAiText(`Generate a complete, ready-to-print ${type} only in ${draftLanguageLabel} (${draftLanguage}) for this selected scheme: "${scheme.title}".
 Do not use any other language in headings or body.
 Do not stop after Subject. Generate the full draft from beginning to signature.
+Keep each paragraph short so the full document fits in one response.
 Use the selected scheme details to decide the correct content, documents, purpose, recipient type, and benefit language.
 Use farmer information wherever available. Put the farmer's actual name, mobile, age, village, district, state, crop, land, bank, PM-KISAN, and other known profile details directly in the relevant fields.
 If any specific field value is missing, write only this blank line: __________
 Never use square brackets, round brackets, curly brackets, angle brackets, placeholder labels like "Current Date", or text like "[Bank Name]".
 Do not ask the user for more data. Do not invent Aadhaar, bank account, address, application number, dates, or land record numbers.
 Do not use asterisks or markdown.
+Never end midway. Include the closing, applicant name, mobile number, place, date, signature, and enclosure/document list when suitable.
 Format guide for this draft type:
 ${draftFormatGuide(type)}
 Farmer profile JSON: ${JSON.stringify(updatedProfile)}
-Selected scheme JSON: ${JSON.stringify(scheme)}`, { language: draftLanguage });
+Selected scheme JSON: ${JSON.stringify(scheme)}`, { language: draftLanguage, maxTokens: 1200 });
     const cleanDraft = cleanDraftText(draft);
     schemeAssistantResult.innerHTML = `<div class="diagnosis-row printable-application colorful-response" id="printableApplication"><strong>${type} - ${scheme.title} (${draftLanguageLabel})</strong><pre>${cleanDraft}</pre></div>`;
     printDraftBtn.classList.remove("hidden");
@@ -827,8 +833,8 @@ async function renderWeather({ forecast, longTerm, latitude, longitude, place })
   if (soilStatus) soilStatus.textContent = days.some((day) => day.rain > 10) ? "Moisture risk is high. Keep drainage clear and avoid over-irrigation." : "Moisture appears manageable. Irrigate based on soil feel and crop stage.";
   try {
     const aiAdvice = await kgAiText(`You are KrishiBaba, a farmer assistant. Give practical, low-cost, farmer-friendly guidance in the selected website language for the next 10 days based on this weather data and farmer profile. Maximum 100 words only. Include what to sow or avoid, irrigation, spraying, harvest timing, disease risk, and one long-term crop growth note. Do not use long introduction.\nLocation: ${place}\nFarmer profile: ${JSON.stringify(profile)}\nWeather days: ${JSON.stringify(days)}`);
-    document.getElementById("krishiBabaWeatherAdvice").innerHTML = `<strong>KrishiBaba farmer guidance</strong><p>${aiAdvice.replace(/\n/g, "<br>")}</p>`;
-    cropAdvice.insertAdjacentHTML("beforeend", `<div class="diagnosis-row"><strong>KrishiBaba recommendation</strong><p>${aiAdvice.replace(/\n/g, "<br>")}</p></div>`);
+    document.getElementById("krishiBabaWeatherAdvice").innerHTML = `<strong>KrishiBaba farmer guidance</strong><p>${renderAiText(aiAdvice)}</p>`;
+    cropAdvice.insertAdjacentHTML("beforeend", `<div class="diagnosis-row"><strong>KrishiBaba recommendation</strong><p>${renderAiText(aiAdvice)}</p></div>`);
     kgSpeak(aiAdvice, kgActiveLanguage);
   } catch (error) {
     document.getElementById("krishiBabaWeatherAdvice").innerHTML = `<strong>KrishiBaba farmer guidance</strong><p>${error.message}</p><p>Use the local advisory shown above until KrishiBaba is available.</p>`;
@@ -857,7 +863,7 @@ async function answerQuestion(question) {
 async function renderDiseaseTreatment(data) {
   try {
     const treatment = await kgAiText(`You are KrishiBaba, a farmer crop disease advisor. Maximum 100 words only. Based on this crop disease API response, explain the easiest low-cost treatment in the selected website language. Include likely disease, low-cost government-supported options if available, medicine or active ingredient names, simple application method, safety precautions, and when to contact an agriculture officer. Do not invent a guaranteed cure.\nAPI response: ${JSON.stringify(data)}`);
-    cropResult.insertAdjacentHTML("beforeend", `<div class="diagnosis-row"><strong>KrishiBaba low-cost treatment plan</strong><p>${treatment.replace(/\n/g, "<br>")}</p></div>`);
+    cropResult.insertAdjacentHTML("beforeend", `<div class="diagnosis-row"><strong>KrishiBaba low-cost treatment plan</strong><p>${renderAiText(treatment)}</p></div>`);
     kgSpeak(treatment, kgActiveLanguage);
   } catch (error) {
     cropResult.insertAdjacentHTML("beforeend", `<div class="diagnosis-row"><strong>Treatment plan unavailable</strong><p>${error.message}</p><p>KrishiBaba treatment guidance could not be loaded. Please consult a local agriculture officer with this diagnosis.</p></div>`);
@@ -871,7 +877,7 @@ async function generateModernTechniquePlan() {
   const cacheKey = `krishigyaanModernTechnique:${dayKey}:${kgActiveLanguage}:${location}:${crop}`;
   const cached = localStorage.getItem(cacheKey);
   if (cached) {
-    modernResult.innerHTML = `<div class="diagnosis-row"><strong>Modern Farming Technique of the Day</strong><p>${cached.replace(/\n/g, "<br>")}</p><small>Saved for today. A new learning unlocks after 4 AM tomorrow.</small></div>`;
+    modernResult.innerHTML = `<div class="diagnosis-row"><strong>Modern Farming Technique of the Day</strong><p>${renderAiText(cached)}</p><small>Saved for today. A new learning unlocks after 4 AM tomorrow.</small></div>`;
     kgSpeak(cached, kgActiveLanguage);
     return;
   }
@@ -880,7 +886,7 @@ async function generateModernTechniquePlan() {
   try {
     const plan = await kgAiText(`You are KrishiBaba. Create the "Modern Farming Technique of the Day" in the selected website language for ${location}. Maximum 100 words only. Pick one common traditional technique for ${crop} or local crops, explain the modern improved technique, why it is profitable with less investment and more output, and 3 simple adoption steps. Farmer-friendly and practical.`);
     localStorage.setItem(cacheKey, plan);
-    modernResult.innerHTML = `<div class="diagnosis-row"><strong>Modern Farming Technique of the Day</strong><p>${plan.replace(/\n/g, "<br>")}</p><small>Saved for today. A new learning unlocks after 4 AM tomorrow.</small></div>`;
+    modernResult.innerHTML = `<div class="diagnosis-row"><strong>Modern Farming Technique of the Day</strong><p>${renderAiText(plan)}</p><small>Saved for today. A new learning unlocks after 4 AM tomorrow.</small></div>`;
     kgSpeak(plan, kgActiveLanguage);
   } catch (error) {
     modernResult.innerHTML = `<div class="diagnosis-row"><strong>Plan unavailable</strong><p>${error.message}</p><p>KrishiBaba could not generate the modern farming technique plan. Please try again after some time.</p></div>`;
@@ -907,7 +913,7 @@ async function analyzeSoilHealth() {
     dashboardSignals.soilScore = score;
     updateDashboardMetrics();
     const advice = await kgAiText(`You are KrishiBaba. Maximum 120 words. Give soil health analysis in the selected website language from this profile and soil photo heuristic. Include likely soil condition, what crop is suitable, what crop to avoid, low-cost improvement path for 30-60 days, compost/organic matter advice, irrigation caution, and mention Soil Health Card lab test for exact NPK/pH. Farmer-friendly.\n${JSON.stringify(localSoil)}`);
-    soilResult.innerHTML = `<div class="soil-score-card"><div class="score-ring" style="--score:${score}"><strong>${score}</strong><span>/100</span></div><div><h3>${band.label}</h3><p>${band.description}</p></div></div><div class="soil-scale"><span>0-40 Low</span><span>40-60 Moderate</span><span>60-80 Good</span><span>80-100 Very good</span></div><div class="diagnosis-row"><strong>Soil health and crop growth path</strong><p>${advice.replace(/\n/g, "<br>")}</p></div><div class="diagnosis-row"><strong>Photo/profile signals</strong><p>Soil type: ${localSoil.registeredSoilType}. Irrigation: ${localSoil.irrigation}. Image hint: ${imageMeta?.colorHint || "No photo uploaded"}.</p></div>`;
+    soilResult.innerHTML = `<div class="soil-score-card"><div class="score-ring" style="--score:${score}"><strong>${score}</strong><span>/100</span></div><div><h3>${band.label}</h3><p>${band.description}</p></div></div><div class="soil-scale"><span>0-40 Low</span><span>40-60 Moderate</span><span>60-80 Good</span><span>80-100 Very good</span></div><div class="diagnosis-row"><strong>Soil health and crop growth path</strong><p>${renderAiText(advice)}</p></div><div class="diagnosis-row"><strong>Photo/profile signals</strong><p>Soil type: ${localSoil.registeredSoilType}. Irrigation: ${localSoil.irrigation}. Image hint: ${imageMeta?.colorHint || "No photo uploaded"}.</p></div>`;
     kgSpeak(advice, kgActiveLanguage);
   } catch (error) {
     const fallback = `Use your Soil Health Card or local lab for exact pH, NPK, EC and organic carbon. Based on profile, add compost/FYM, avoid over-irrigation, keep drainage clear, and choose locally suitable crops after weather check.`;
@@ -1002,7 +1008,7 @@ chatForm?.addEventListener("submit", (event) => {
   event.preventDefault();
   chatAnswer.innerHTML = `<span class="empty-state">KrishiBaba is preparing farmer guidance...</span>`;
   answerQuestion(chatQuestion.value || "").then((answer) => {
-    chatAnswer.innerHTML = `<div class="diagnosis-row"><strong>KrishiGyaan advisory</strong><p>${answer.replace(/\n/g, "<br>")}</p></div>`;
+    chatAnswer.innerHTML = `<div class="diagnosis-row"><strong>KrishiGyaan advisory</strong><p>${renderAiText(answer)}</p></div>`;
     kgSpeak(answer, kgActiveLanguage);
   });
 });
