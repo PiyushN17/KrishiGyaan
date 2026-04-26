@@ -1581,7 +1581,8 @@ textarea.field-invalid {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-width: 104px;
+  width: 48px;
+  min-width: 48px;
   height: 44px;
   border: 0;
   border-radius: 999px;
@@ -1595,7 +1596,7 @@ textarea.field-invalid {
 
 .audio-mute-button {
   right: 24px;
-  bottom: 98px;
+  bottom: 82px;
 }
 
 .audio-mute-button.muted {
@@ -1822,8 +1823,8 @@ textarea.field-invalid {
 
   .audio-mute-button {
     right: 14px;
-    bottom: 84px;
-    min-width: 92px;
+    bottom: 72px;
+    min-width: 48px;
   }
 
   .go-top-button {

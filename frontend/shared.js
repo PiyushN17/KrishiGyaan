@@ -414,7 +414,7 @@ function kgSpeak(text, lang = kgActiveLanguage) {
   const speechLang = kgSpeechLang(lang);
   const voice = kgBestVoice(lang);
   const chunks = kgSplitSpeechText(text);
-  const button = document.getElementById("speakerButton");
+  const button = document.getElementById("audioMuteButton");
   button?.classList.add("speaking");
   const speakChunk = (index = 0) => {
     if (index >= chunks.length) {
@@ -436,10 +436,10 @@ function kgSpeak(text, lang = kgActiveLanguage) {
 function kgUpdateMuteButton() {
   const button = document.getElementById("audioMuteButton");
   if (!button) return;
-  const label = kgAudioMuted ? kgTranslatePhrase("Unmute") : kgTranslatePhrase("Mute");
   const ariaLabel = kgAudioMuted ? kgTranslatePhrase("Unmute audio") : kgTranslatePhrase("Mute audio");
-  button.innerHTML = kgAudioMuted ? `<i data-lucide="volume-x"></i><span>${label}</span>` : `<i data-lucide="volume-2"></i><span>${label}</span>`;
+  button.innerHTML = kgAudioMuted ? '<i data-lucide="volume-x"></i>' : '<i data-lucide="volume-2"></i>';
   button.setAttribute("aria-label", ariaLabel);
+  button.setAttribute("title", ariaLabel);
   button.classList.toggle("muted", kgAudioMuted);
   kgRefreshIcons();
 }
@@ -595,7 +595,6 @@ function kgInitShared({ askLocation = true } = {}) {
       if (permission.state === "granted") kgAskLocationAndLocalize();
     };
   }).catch(() => {});
-  document.getElementById("speakerButton")?.addEventListener("click", () => kgSpeak(kgCollectReadableText(), kgActiveLanguage));
   document.addEventListener("click", (event) => {
     const target = event.target.closest(".speakable, [data-i18n], h1, h2, h3, h4, p, span, strong, small, label, button, a, li, summary, .diagnosis-row, .scheme-card, .analytics-card, .feature-card");
     const text = kgCollectClickedText(target);

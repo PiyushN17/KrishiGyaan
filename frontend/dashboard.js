@@ -288,6 +288,10 @@ function summarizeProfile() {
   if (profileSummary) profileSummary.textContent = `${name}, KrishiGyaan is preparing advice for ${crop} on ${land} in ${state}. Use weather advisory first for crop-stage decisions.`;
 }
 
+function uiText(text) {
+  return kgTranslatePhrase(text, kgActiveLanguage);
+}
+
 function renderSchemes() {
   if (!schemeMatcher) return;
   const eligibleCount = schemes.filter((scheme) => scheme.check(profile)).length;
@@ -298,18 +302,18 @@ function renderSchemes() {
     return `
       <article class="scheme-card ${eligible ? "eligible" : "not-eligible"} speakable">
         <div>
-          <span class="scheme-status">${eligible ? "Eligible match" : "Not matched yet"}</span>
-          <h3>${scheme.title}</h3>
-          <p>${scheme.summary}</p>
-          <p><b>Estimated benefit:</b> ${scheme.benefit}</p>
-          <small>${scheme.reason}</small>
+          <span class="scheme-status">${uiText(eligible ? "Eligible match" : "Not matched yet")}</span>
+          <h3>${uiText(scheme.title)}</h3>
+          <p>${uiText(scheme.summary)}</p>
+          <p><b>${uiText("Estimated benefit:")}</b> ${uiText(scheme.benefit)}</p>
+          <small>${uiText(scheme.reason)}</small>
         </div>
-        <a class="btn ${eligible ? "btn-primary" : "btn-disabled"}" ${eligible ? `href="${scheme.link}" target="_blank" rel="noopener"` : 'aria-disabled="true"'}>${eligible ? "Apply" : "Not Eligible"}</a>
+        <a class="btn ${eligible ? "btn-primary" : "btn-disabled"}" ${eligible ? `href="${scheme.link}" target="_blank" rel="noopener"` : 'aria-disabled="true"'}>${uiText(eligible ? "Apply" : "Not Eligible")}</a>
       </article>
     `;
   }).join("");
 
-  schemeMatcher.innerHTML = `<div class="scheme-summary"><strong>${eligibleCount}</strong><span>eligible matches from your registration profile</span></div><div class="scheme-grid">${rows}</div>`;
+  schemeMatcher.innerHTML = `<div class="scheme-summary"><strong>${eligibleCount}</strong><span>${uiText("eligible matches from your registration profile")}</span></div><div class="scheme-grid">${rows}</div>`;
   renderSchemeDraftOptions();
 }
 
@@ -321,8 +325,8 @@ function renderSchemeDraftOptions() {
   if (!schemeDraftSelect) return;
   const eligible = eligibleSchemes();
   schemeDraftSelect.innerHTML = eligible.length
-    ? eligible.map((scheme) => `<option value="${scheme.title}">${scheme.title}</option>`).join("")
-    : `<option value="">No eligible scheme yet</option>`;
+    ? eligible.map((scheme) => `<option value="${scheme.title}">${uiText(scheme.title)}</option>`).join("")
+    : `<option value="">${uiText("No eligible scheme yet")}</option>`;
   if (schemeDraftLanguage) {
     schemeDraftLanguage.innerHTML = Object.entries(KG_LANGUAGES).map(([code, meta]) => `<option value="${code}">${meta.label}</option>`).join("");
     schemeDraftLanguage.value = "en-IN";
@@ -956,6 +960,7 @@ initSidebarScrollSpy();
 initSpeechToText();
 localizeLongTermIntro();
 window.addEventListener("kg-language-change", localizeLongTermIntro);
+window.addEventListener("kg-language-change", renderSchemes);
 
 document.getElementById("logoutBtn")?.addEventListener("click", () => {
   localStorage.setItem("krishigyaanLoggedIn", "false");
