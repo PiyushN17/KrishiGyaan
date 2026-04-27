@@ -1435,6 +1435,24 @@ textarea.field-invalid {
   line-height: 1.55;
 }
 
+.offline-banner {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 12px;
+  padding: 12px 14px;
+  color: #4f3f06;
+  background: #fff8d6;
+  border: 1px solid rgba(249, 168, 37, 0.38);
+  border-radius: 8px;
+  font-weight: 800;
+}
+
+.offline-banner span,
+.offline-banner small {
+  color: #76601a;
+  font-weight: 700;
+}
+
 .diagnosis {
   display: grid;
   gap: 12px;

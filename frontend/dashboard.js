@@ -399,14 +399,35 @@ function renderAiText(text = "") {
   return kgCleanAiText(text).replace(/\n/g, "<br>");
 }
 
+function isOfflineLikeError(error) {
+  return !navigator.onLine || /failed to fetch|network|offline|load failed/i.test(error?.message || "");
+}
+
+function saveDashboardSnapshot(key, element) {
+  if (element?.innerHTML) kgSaveOfflineSnapshot(`dashboard:${key}`, element.innerHTML);
+}
+
+function showDashboardSnapshot(key, element, label, error) {
+  return kgRenderOfflineSnapshot(element, `dashboard:${key}`, label, error);
+}
+
+function saveWeatherSnapshots() {
+  saveDashboardSnapshot("weather", weatherResult);
+  saveDashboardSnapshot("crop-advice", cropAdvice);
+  saveDashboardSnapshot("long-term", longTermResult);
+}
+
 async function askSchemeAssistant(question) {
   schemeAssistantResult.innerHTML = `<span class="empty-state">KrishiBaba is checking scheme guidance...</span>`;
   try {
     const answer = await kgAiText(`You are KrishiBaba, a government scheme assistant for Indian farmers. Explain simply in the selected website language and avoid dates. Farmer profile: ${JSON.stringify(profile)}. Available schemes: ${JSON.stringify(schemes.map(({ title, summary, benefit, reason }) => ({ title, summary, benefit, reason })))}. Farmer question: ${question}`);
     schemeAssistantResult.innerHTML = `<div class="diagnosis-row"><strong>KrishiBaba scheme guidance</strong><p>${renderAiText(answer)}</p></div>`;
+    saveDashboardSnapshot("scheme-guidance", schemeAssistantResult);
     kgSpeak(answer, kgActiveLanguage);
   } catch (error) {
-    schemeAssistantResult.innerHTML = `<div class="diagnosis-row"><strong>Scheme guidance unavailable</strong><p>${error.message}</p></div>`;
+    if (!isOfflineLikeError(error) || !showDashboardSnapshot("scheme-guidance", schemeAssistantResult, "scheme guidance", error)) {
+      schemeAssistantResult.innerHTML = `<div class="diagnosis-row"><strong>Scheme guidance unavailable</strong><p>${error.message}</p></div>`;
+    }
   }
 }
 
@@ -441,9 +462,12 @@ Farmer profile JSON: ${JSON.stringify(updatedProfile)}
 Selected scheme JSON: ${JSON.stringify(scheme)}`, { language: draftLanguage, maxTokens: 1200 });
     const cleanDraft = cleanDraftText(draft);
     schemeAssistantResult.innerHTML = `<div class="diagnosis-row printable-application colorful-response" id="printableApplication"><strong>${type} - ${scheme.title} (${draftLanguageLabel})</strong><pre>${cleanDraft}</pre></div>`;
+    saveDashboardSnapshot("scheme-draft", schemeAssistantResult);
     printDraftBtn.classList.remove("hidden");
   } catch (error) {
-    schemeAssistantResult.innerHTML = `<div class="diagnosis-row"><strong>Draft unavailable</strong><p>${error.message}</p></div>`;
+    if (!isOfflineLikeError(error) || !showDashboardSnapshot("scheme-draft", schemeAssistantResult, "application draft", error)) {
+      schemeAssistantResult.innerHTML = `<div class="diagnosis-row"><strong>Draft unavailable</strong><p>${error.message}</p></div>`;
+    }
   }
 }
 
@@ -844,6 +868,7 @@ async function renderWeather({ forecast, longTerm, latitude, longitude, place })
     document.getElementById("krishiBabaWeatherAdvice").innerHTML = `<strong>KrishiBaba farmer guidance</strong><p>${error.message}</p><p>Use the local advisory shown above until KrishiBaba is available.</p>`;
     kgSpeak(advice.join(" "), kgActiveLanguage);
   }
+  saveWeatherSnapshots();
 }
 
 async function answerQuestion(question) {
@@ -853,6 +878,7 @@ async function answerQuestion(question) {
     return await kgAiText(`You are KrishiBaba, a farmer helper. Give safe, practical, low-cost farming advice in the selected website language. Farmer profile: ${JSON.stringify(profile)}. Farmer question: ${question}`);
   } catch (error) {
     console.warn("KrishiBaba chat failed:", error);
+    if (isOfflineLikeError(error)) throw error;
     if (q.includes("krishibaba") || q.includes("grok") || q.trim().length > 0) {
       return `${error.message} Meanwhile, based on your profile, check weather, soil moisture, disease symptoms, and crop stage before taking action.`;
     }
@@ -868,9 +894,11 @@ async function renderDiseaseTreatment(data) {
   try {
     const treatment = await kgAiText(`You are KrishiBaba, a farmer crop disease advisor. Maximum 100 words only. Based on this crop disease API response, explain the easiest low-cost treatment in the selected website language. Include likely disease, low-cost government-supported options if available, medicine or active ingredient names, simple application method, safety precautions, and when to contact an agriculture officer. Do not invent a guaranteed cure.\nAPI response: ${JSON.stringify(data)}`);
     cropResult.insertAdjacentHTML("beforeend", `<div class="diagnosis-row"><strong>KrishiBaba low-cost treatment plan</strong><p>${renderAiText(treatment)}</p></div>`);
+    saveDashboardSnapshot("crop-health", cropResult);
     kgSpeak(treatment, kgActiveLanguage);
   } catch (error) {
     cropResult.insertAdjacentHTML("beforeend", `<div class="diagnosis-row"><strong>Treatment plan unavailable</strong><p>${error.message}</p><p>KrishiBaba treatment guidance could not be loaded. Please consult a local agriculture officer with this diagnosis.</p></div>`);
+    saveDashboardSnapshot("crop-health", cropResult);
   }
 }
 
@@ -882,6 +910,7 @@ async function generateModernTechniquePlan() {
   const cached = localStorage.getItem(cacheKey);
   if (cached) {
     modernResult.innerHTML = `<div class="diagnosis-row"><strong>Modern Farming Technique of the Day</strong><p>${renderAiText(cached)}</p><small>Saved for today. A new learning unlocks after 4 AM tomorrow.</small></div>`;
+    saveDashboardSnapshot("modern-technique", modernResult);
     kgSpeak(cached, kgActiveLanguage);
     return;
   }
@@ -891,9 +920,12 @@ async function generateModernTechniquePlan() {
     const plan = await kgAiText(`You are KrishiBaba. Create the "Modern Farming Technique of the Day" in the selected website language for ${location}. Maximum 100 words only. Pick one common traditional technique for ${crop} or local crops, explain the modern improved technique, why it is profitable with less investment and more output, and 3 simple adoption steps. Farmer-friendly and practical.`);
     localStorage.setItem(cacheKey, plan);
     modernResult.innerHTML = `<div class="diagnosis-row"><strong>Modern Farming Technique of the Day</strong><p>${renderAiText(plan)}</p><small>Saved for today. A new learning unlocks after 4 AM tomorrow.</small></div>`;
+    saveDashboardSnapshot("modern-technique", modernResult);
     kgSpeak(plan, kgActiveLanguage);
   } catch (error) {
-    modernResult.innerHTML = `<div class="diagnosis-row"><strong>Plan unavailable</strong><p>${error.message}</p><p>KrishiBaba could not generate the modern farming technique plan. Please try again after some time.</p></div>`;
+    if (!isOfflineLikeError(error) || !showDashboardSnapshot("modern-technique", modernResult, "modern technique", error)) {
+      modernResult.innerHTML = `<div class="diagnosis-row"><strong>Plan unavailable</strong><p>${error.message}</p><p>KrishiBaba could not generate the modern farming technique plan. Please try again after some time.</p></div>`;
+    }
   }
 }
 
@@ -922,8 +954,10 @@ async function analyzeSoilHealth() {
     updateDashboardMetrics();
     const advice = await kgAiText(`You are KrishiBaba. Maximum 120 words. Give soil health analysis in the selected website language from this profile and soil photo heuristic. Include likely soil condition, what crop is suitable, what crop to avoid, low-cost improvement path for 30-60 days, compost/organic matter advice, irrigation caution, and mention Soil Health Card lab test for exact NPK/pH. Farmer-friendly.\n${JSON.stringify(localSoil)}`);
     soilResult.innerHTML = `<div class="soil-score-card"><div class="score-ring" style="--score:${score}"><strong>${score}</strong><span>/100</span></div><div><h3>${band.label}</h3><p>${band.description}</p></div></div><div class="soil-scale"><span>0-40 Low</span><span>40-60 Moderate</span><span>60-80 Good</span><span>80-100 Very good</span></div><div class="diagnosis-row"><strong>Soil health and crop growth path</strong><p>${renderAiText(advice)}</p></div><div class="diagnosis-row"><strong>Photo/profile signals</strong><p>Soil type: ${localSoil.registeredSoilType}. Irrigation: ${localSoil.irrigation}. Image hint: ${imageMeta?.colorHint || "No photo uploaded"}.</p></div>`;
+    saveDashboardSnapshot("soil-health", soilResult);
     kgSpeak(advice, kgActiveLanguage);
   } catch (error) {
+    if (isOfflineLikeError(error) && showDashboardSnapshot("soil-health", soilResult, "soil health result", error)) return;
     const fallback = `Use your Soil Health Card or local lab for exact pH, NPK, EC and organic carbon. Based on profile, add compost/FYM, avoid over-irrigation, keep drainage clear, and choose locally suitable crops after weather check.`;
     soilResult.innerHTML = `<div class="diagnosis-row"><strong>Soil health and crop growth path</strong><p>${fallback}</p><p>${error.message}</p></div>`;
   }
@@ -978,7 +1012,14 @@ weatherBtn?.addEventListener("click", async () => {
     const data = await fetchWeather();
     await renderWeather(data);
   } catch (error) {
-    weatherResult.innerHTML = `<div class="diagnosis-row"><strong>Weather unavailable</strong><p>${error.message}</p><p>Please allow location or add latitude and longitude in your profile.</p></div>`;
+    if (isOfflineLikeError(error)) {
+      const weatherShown = showDashboardSnapshot("weather", weatherResult, "weather advisory", error);
+      showDashboardSnapshot("crop-advice", cropAdvice, "crop advisory", error);
+      showDashboardSnapshot("long-term", longTermResult, "growth outlook", error);
+      if (!weatherShown) weatherResult.innerHTML = `<div class="diagnosis-row"><strong>Weather unavailable</strong><p>${error.message}</p><p>No saved weather advisory is available yet. Open this panel once online to store it for offline use.</p></div>`;
+    } else {
+      weatherResult.innerHTML = `<div class="diagnosis-row"><strong>Weather unavailable</strong><p>${error.message}</p><p>Please allow location or add latitude and longitude in your profile.</p></div>`;
+    }
   } finally {
     weatherBtn.disabled = false;
   }
@@ -1006,8 +1047,11 @@ detectBtn?.addEventListener("click", async () => {
     if (hasActionableDisease(data)) {
       await renderDiseaseTreatment(data);
     }
+    saveDashboardSnapshot("crop-health", cropResult);
   } catch (error) {
-    cropResult.innerHTML = `<div class="diagnosis-row"><strong>Analysis failed</strong><p>${error.message}</p><p>Please check internet access, image size, or API availability.</p></div>`;
+    if (!isOfflineLikeError(error) || !showDashboardSnapshot("crop-health", cropResult, "crop health analysis", error)) {
+      cropResult.innerHTML = `<div class="diagnosis-row"><strong>Analysis failed</strong><p>${error.message}</p><p>Please check internet access, image size, or API availability.</p></div>`;
+    }
   } finally {
     detectBtn.disabled = false;
   }
@@ -1018,7 +1062,12 @@ chatForm?.addEventListener("submit", (event) => {
   chatAnswer.innerHTML = `<span class="empty-state">KrishiBaba is preparing farmer guidance...</span>`;
   answerQuestion(chatQuestion.value || "").then((answer) => {
     chatAnswer.innerHTML = `<div class="diagnosis-row"><strong>KrishiGyaan advisory</strong><p>${renderAiText(answer)}</p></div>`;
+    saveDashboardSnapshot("chat-answer", chatAnswer);
     kgSpeak(answer, kgActiveLanguage);
+  }).catch((error) => {
+    if (!isOfflineLikeError(error) || !showDashboardSnapshot("chat-answer", chatAnswer, "chatbot reply", error)) {
+      chatAnswer.innerHTML = `<div class="diagnosis-row"><strong>KrishiBaba unavailable</strong><p>${error.message}</p></div>`;
+    }
   });
 });
 

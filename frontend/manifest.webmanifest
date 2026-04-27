@@ -1,0 +1,17 @@
+{
+  "name": "KrishiGyaan",
+  "short_name": "KrishiGyaan",
+  "description": "AI-powered multilingual farming advisory for Indian farmers.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f8faf2",
+  "theme_color": "#1b5e20",
+  "icons": [
+    {
+      "src": "https://img.freepik.com/premium-vector/small-tree-tob-flat-vector-illustration-white-background_674398-2580.jpg?semt=ais_hybrid&w=740&q=80",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}

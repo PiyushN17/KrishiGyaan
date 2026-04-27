@@ -142,6 +142,7 @@ let kgLocalizationObserver;
 let kgLocalizationQueued = false;
 const kgTranslationCache = JSON.parse(localStorage.getItem("krishigyaanTranslationCache") || "{}");
 const kgAiCache = JSON.parse(localStorage.getItem("krishigyaanAiCache") || "{}");
+const KG_OFFLINE_PREFIX = "krishigyaanOffline:";
 
 function kgApiUrl(path) {
   if (window.location.protocol === "http:" || window.location.protocol === "https:") return path;
@@ -204,6 +205,45 @@ function kgCleanAiText(text = "") {
     .replace(/\u2022/g, "-")
     .replace(/\n{3,}/g, "\n\n")
     .trim();
+}
+
+function kgOfflineMessage(label = "this feature") {
+  return `You are offline. Showing the last saved ${label} from this browser.`;
+}
+
+function kgSaveOfflineSnapshot(key, html) {
+  if (!key || !html) return;
+  try {
+    localStorage.setItem(`${KG_OFFLINE_PREFIX}${key}`, JSON.stringify({
+      html,
+      savedAt: new Date().toISOString()
+    }));
+  } catch (error) {
+    console.warn("Offline snapshot could not be saved:", error);
+  }
+}
+
+function kgGetOfflineSnapshot(key) {
+  try {
+    return JSON.parse(localStorage.getItem(`${KG_OFFLINE_PREFIX}${key}`) || "null");
+  } catch {
+    return null;
+  }
+}
+
+function kgRenderOfflineSnapshot(target, key, label = "result", error) {
+  const snapshot = kgGetOfflineSnapshot(key);
+  if (!target || !snapshot?.html) return false;
+  const savedAt = snapshot.savedAt ? new Date(snapshot.savedAt).toLocaleString("en-IN") : "earlier";
+  target.innerHTML = `<div class="offline-banner"><strong>${kgOfflineMessage(label)}</strong><span>Saved: ${savedAt}</span>${error?.message ? `<small>${error.message}</small>` : ""}</div>${snapshot.html}`;
+  return true;
+}
+
+function kgRegisterServiceWorker() {
+  if (!("serviceWorker" in navigator) || window.location.protocol === "file:") return;
+  navigator.serviceWorker.register("/sw.js").catch((error) => {
+    console.warn("Offline support could not be registered:", error);
+  });
 }
 
 function kgRefreshIcons() {
@@ -617,6 +657,7 @@ function kgUseDetectedLanguage() {
 }
 
 function kgInitShared({ askLocation = true } = {}) {
+  kgRegisterServiceWorker();
   kgRefreshVoiceList();
   if ("speechSynthesis" in window) window.speechSynthesis.onvoiceschanged = kgRefreshVoiceList;
   document.querySelectorAll("[data-i18n]").forEach((node) => kgBaseTexts.set(node.dataset.i18n, node.textContent.trim()));
