@@ -133,6 +133,7 @@ const KG_TRANSLATIONS = {
 
 let kgActiveLanguage = localStorage.getItem("krishigyaanLanguage") || "en-IN";
 let kgAudioMuted = localStorage.getItem("krishigyaanAudioMuted") === "true";
+let kgManualLanguageLocked = localStorage.getItem("krishigyaanManualLanguage") === "true";
 const kgBaseTexts = new Map();
 const kgOriginalTextNodes = new WeakMap();
 const kgOriginalAttrs = new WeakMap();
@@ -308,6 +309,12 @@ function kgApplyLanguage(lang) {
   kgPopulateLanguageSelects();
   kgApplyPredefinedLocale();
   window.dispatchEvent(new CustomEvent("kg-language-change", { detail: { language: kgActiveLanguage } }));
+}
+
+function kgApplyManualLanguage(lang) {
+  kgManualLanguageLocked = true;
+  localStorage.setItem("krishigyaanManualLanguage", "true");
+  kgApplyLanguage(lang);
 }
 
 async function kgTranslateMissingPageText(lang) {
@@ -543,6 +550,7 @@ async function kgReverseGeocodeState(latitude, longitude) {
 }
 
 async function kgApplyLocationLanguage(latitude, longitude) {
+  if (kgManualLanguageLocked) return;
   const geo = await kgReverseGeocodeState(latitude, longitude);
   const lang = kgLanguageForState(geo.state);
   localStorage.setItem("krishigyaanLocation", JSON.stringify({ latitude, longitude, state: geo.state, place: geo.place, language: lang }));
@@ -559,6 +567,7 @@ async function kgApplyLocationLanguage(latitude, longitude) {
 }
 
 function kgAskLocationAndLocalize() {
+  if (kgManualLanguageLocked) return;
   const saved = JSON.parse(localStorage.getItem("krishigyaanLocation") || "null");
   if (saved?.language) {
     kgApplyLanguage(saved.language);
@@ -587,7 +596,7 @@ function kgInitShared({ askLocation = true } = {}) {
   kgStartLocaleObserver();
   kgRefreshIcons();
   document.querySelectorAll("#voiceLanguage, #languageSelect, #loginLanguage").forEach((select) => {
-    select?.addEventListener("change", (event) => kgApplyLanguage(event.target.value));
+    select?.addEventListener("change", (event) => kgApplyManualLanguage(event.target.value));
   });
   navigator.permissions?.query?.({ name: "geolocation" }).then((permission) => {
     if (permission.state === "granted") kgAskLocationAndLocalize();
