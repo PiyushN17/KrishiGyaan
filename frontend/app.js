@@ -13,6 +13,26 @@ const forgotPasswordBtn = document.getElementById("forgotPasswordBtn");
 const siteHeader = document.getElementById("siteHeader");
 const navToggle = document.getElementById("navToggle");
 const navLinks = document.getElementById("navLinks");
+const pageName = document.body?.dataset.page || "";
+
+function isFarmerLoggedIn() {
+  return localStorage.getItem("krishigyaanLoggedIn") === "true";
+}
+
+function redirectLoggedInAuthPages() {
+  if ((pageName === "login" || pageName === "register") && isFarmerLoggedIn()) {
+    window.location.replace("dashboard.html");
+  }
+}
+
+function updateLoggedInNavigation() {
+  if (!isFarmerLoggedIn()) return;
+  document.querySelectorAll('a[href="login.html"], a[href="register.html"]').forEach((link) => {
+    link.href = "dashboard.html";
+  });
+}
+
+redirectLoggedInAuthPages();
 
 const FIELD_RULES = {
   fullName: { test: (value) => /^[A-Za-zÀ-ž\u0900-\u097F\u0A80-\u0AFF\u0C80-\u0CFF\u0B80-\u0BFF\u0C00-\u0C7F\u0A00-\u0A7F .'-]{3,60}$/.test(value), message: "Enter a valid farmer name with at least 3 letters." },
@@ -230,8 +250,7 @@ async function handleForgotPassword() {
 }
 
 function openProtectedFeature(card) {
-  const loggedIn = localStorage.getItem("krishigyaanLoggedIn") === "true";
-  if (loggedIn) {
+  if (isFarmerLoggedIn()) {
     window.location.href = card.dataset.featureLink || "dashboard.html";
     return;
   }
@@ -292,5 +311,6 @@ document.getElementById("demoBtn")?.addEventListener("click", () => {
 });
 
 kgInitShared({ askLocation: true });
+updateLoggedInNavigation();
 updateRegisterStep(0);
 animateCounters();

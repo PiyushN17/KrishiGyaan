@@ -1819,6 +1819,8 @@ textarea.field-invalid {
   .voice-panel {
     right: 14px;
     bottom: 14px;
+    left: 14px;
+    justify-content: flex-end;
   }
 
   .audio-mute-button {
@@ -1833,6 +1835,9 @@ textarea.field-invalid {
   }
 
   .voice-panel select {
-    display: none;
+    display: block;
+    width: min(180px, calc(100vw - 116px));
+    height: 42px;
+    font-size: 0.9rem;
   }
 }
