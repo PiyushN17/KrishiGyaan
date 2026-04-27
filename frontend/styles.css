@@ -1550,6 +1550,20 @@ textarea.field-invalid {
   box-shadow: var(--soft-shadow);
 }
 
+.detect-language-button {
+  min-width: 118px;
+  height: 44px;
+  padding: 0 12px;
+  color: var(--deep-green);
+  background: var(--white);
+  border: 1px solid rgba(46, 125, 50, 0.18);
+  border-radius: 8px;
+  box-shadow: var(--soft-shadow);
+  font-weight: 900;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
 .speaker-button {
   width: 62px;
   height: 62px;
@@ -1836,8 +1850,15 @@ textarea.field-invalid {
 
   .voice-panel select {
     display: block;
-    width: min(180px, calc(100vw - 116px));
+    width: min(142px, calc(100vw - 176px));
     height: 42px;
     font-size: 0.9rem;
+  }
+
+  .detect-language-button {
+    min-width: 104px;
+    height: 42px;
+    padding: 0 10px;
+    font-size: 0.82rem;
   }
 }

@@ -307,6 +307,7 @@ function kgApplyLanguage(lang) {
     node.setAttribute("placeholder", kgActiveLanguage === "en-IN" ? english : kgTranslatePhrase(english, kgActiveLanguage) || dictionary[key] || english);
   });
   kgPopulateLanguageSelects();
+  kgUpdateDetectLanguageButton();
   kgApplyPredefinedLocale();
   window.dispatchEvent(new CustomEvent("kg-language-change", { detail: { language: kgActiveLanguage } }));
 }
@@ -315,6 +316,30 @@ function kgApplyManualLanguage(lang) {
   kgManualLanguageLocked = true;
   localStorage.setItem("krishigyaanManualLanguage", "true");
   kgApplyLanguage(lang);
+}
+
+function kgUpdateDetectLanguageButton() {
+  const button = document.getElementById("detectLanguageButton");
+  if (!button) return;
+  const label = kgTranslatePhrase("Detect language");
+  button.textContent = label;
+  button.setAttribute("aria-label", label);
+  button.setAttribute("title", label);
+}
+
+function kgEnsureLanguageDetectControl() {
+  const panel = document.querySelector(".voice-panel");
+  if (!panel || document.getElementById("detectLanguageButton")) {
+    kgUpdateDetectLanguageButton();
+    return;
+  }
+  const button = document.createElement("button");
+  button.type = "button";
+  button.id = "detectLanguageButton";
+  button.className = "detect-language-button";
+  button.addEventListener("click", () => kgUseDetectedLanguage());
+  panel.appendChild(button);
+  kgUpdateDetectLanguageButton();
 }
 
 async function kgTranslateMissingPageText(lang) {
@@ -566,8 +591,8 @@ async function kgApplyLocationLanguage(latitude, longitude) {
   kgSpeak(`${(KG_TRANSLATIONS[kgActiveLanguage] || KG_EN).locationDetected} ${geo.place}.`, kgActiveLanguage);
 }
 
-function kgAskLocationAndLocalize() {
-  if (kgManualLanguageLocked) return;
+function kgAskLocationAndLocalize({ force = false } = {}) {
+  if (kgManualLanguageLocked && !force) return;
   const saved = JSON.parse(localStorage.getItem("krishigyaanLocation") || "null");
   if (saved?.language) {
     kgApplyLanguage(saved.language);
@@ -585,12 +610,19 @@ function kgAskLocationAndLocalize() {
   );
 }
 
+function kgUseDetectedLanguage() {
+  kgManualLanguageLocked = false;
+  localStorage.removeItem("krishigyaanManualLanguage");
+  kgAskLocationAndLocalize({ force: true });
+}
+
 function kgInitShared({ askLocation = true } = {}) {
   kgRefreshVoiceList();
   if ("speechSynthesis" in window) window.speechSynthesis.onvoiceschanged = kgRefreshVoiceList;
   document.querySelectorAll("[data-i18n]").forEach((node) => kgBaseTexts.set(node.dataset.i18n, node.textContent.trim()));
   kgPopulateLanguageSelects();
   kgApplyLanguage(kgActiveLanguage);
+  kgEnsureLanguageDetectControl();
   kgEnsureAudioControls();
   kgEnsureHomeTopButton();
   kgStartLocaleObserver();
