@@ -140,6 +140,7 @@ const kgOriginalAttrs = new WeakMap();
 let kgOriginalTitle = document.title;
 let kgLocalizationObserver;
 let kgLocalizationQueued = false;
+let kgWasOffline = !navigator.onLine;
 const kgTranslationCache = JSON.parse(localStorage.getItem("krishigyaanTranslationCache") || "{}");
 const kgAiCache = JSON.parse(localStorage.getItem("krishigyaanAiCache") || "{}");
 const KG_OFFLINE_PREFIX = "krishigyaanOffline:";
@@ -243,6 +244,37 @@ function kgRegisterServiceWorker() {
   if (!("serviceWorker" in navigator) || window.location.protocol === "file:") return;
   navigator.serviceWorker.register("/sw.js").catch((error) => {
     console.warn("Offline support could not be registered:", error);
+  });
+}
+
+function kgShowReconnectPrompt() {
+  if (document.getElementById("reconnectPrompt")) return;
+  const overlay = document.createElement("div");
+  overlay.id = "reconnectPrompt";
+  overlay.className = "reconnect-prompt";
+  overlay.innerHTML = `
+    <div class="reconnect-card" role="dialog" aria-modal="true" aria-labelledby="reconnectTitle">
+      <strong id="reconnectTitle">${kgTranslatePhrase("Internet connection detected")}</strong>
+      <p>${kgTranslatePhrase("Reload page to use live AI, weather, crop health, and API features again.")}</p>
+      <div>
+        <button type="button" class="btn btn-primary" id="reloadOnlinePage">${kgTranslatePhrase("Reload page")}</button>
+        <button type="button" class="btn btn-ghost" id="cancelOnlineReload">${kgTranslatePhrase("Cancel")}</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  document.getElementById("reloadOnlinePage")?.addEventListener("click", () => window.location.reload());
+  document.getElementById("cancelOnlineReload")?.addEventListener("click", () => overlay.remove());
+}
+
+function kgInitConnectionRecoveryPrompt() {
+  window.addEventListener("offline", () => {
+    kgWasOffline = true;
+  });
+  window.addEventListener("online", () => {
+    if (!kgWasOffline) return;
+    kgWasOffline = false;
+    kgShowReconnectPrompt();
   });
 }
 
@@ -658,6 +690,7 @@ function kgUseDetectedLanguage() {
 
 function kgInitShared({ askLocation = true } = {}) {
   kgRegisterServiceWorker();
+  kgInitConnectionRecoveryPrompt();
   kgRefreshVoiceList();
   if ("speechSynthesis" in window) window.speechSynthesis.onvoiceschanged = kgRefreshVoiceList;
   document.querySelectorAll("[data-i18n]").forEach((node) => kgBaseTexts.set(node.dataset.i18n, node.textContent.trim()));
