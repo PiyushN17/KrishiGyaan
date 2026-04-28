@@ -2,7 +2,7 @@
 
 KrishiGyaan is an AI-powered agriculture support platform built for Indian farmers. It brings crop advisory, weather-aware planning, government scheme discovery, crop and plant disease scanning, soil guidance, multilingual voice support, and secure farmer registration into one web dashboard.
 
-This project was created for a hackathon by **Team KrishiYoddha** with the goal of making digital agriculture guidance more accessible, local-language friendly, and practical for real farmers.
+This project was created for a hackathon by **Team KrishiYoddha** with the goal of making digital agriculture guidance more accessible, local-language friendly, and practical for real farmers. KrishiGyaan won **1st position at the HyperVerge Academy Launchpad Hackathon 2026**.
 
 ## Problem Statement
 
