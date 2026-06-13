@@ -220,8 +220,8 @@ KrishiGyaan is designed to help farmers:
 
 **Team KrishiYoddha**
 
+- Piyush Nath (Lead)
 - Preeti Gorwade
-- Piyush Nath
 - Abhay
 - Bhagyalakshmi Siddavatam
 
